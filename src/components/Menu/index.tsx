@@ -13,7 +13,7 @@ const Menu: React.FC<MenuProps> = () => {
 
   return (
     <>
-      <div className="bg-white rounded-md p-3 shadow-lg flex">
+      <div className="bg-white rounded-md p-3 shadow-lg flex h-[500px]">
         <div className="p-3 bg-gray-200 rounded-md">
           <Tabs chooseTab={chooseTab} currentTab={currentTab} />
         </div>

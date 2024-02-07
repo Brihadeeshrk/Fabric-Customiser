@@ -21,34 +21,34 @@ interface Tab {
 }
 
 const TabOptions: Array<Tab> = [
-  {
-    title: "Products",
-    icon: AiOutlineShoppingCart,
-  },
-  {
-    title: "Assets",
-    icon: AiTwotoneCamera,
-  },
+  // {
+  //   title: "Products",
+  //   icon: AiOutlineShoppingCart,
+  // },
+  // {
+  //   title: "Assets",
+  //   icon: AiTwotoneCamera,
+  // },
   {
     title: "Upload",
     icon: AiOutlineCloudUpload,
   },
-  {
-    title: "QRCode",
-    icon: AiOutlineQrcode,
-  },
-  {
-    title: "Draw",
-    icon: PiPencilSimpleDuotone,
-  },
+  // {
+  //   title: "QRCode",
+  //   icon: AiOutlineQrcode,
+  // },
+  // {
+  //   title: "Draw",
+  //   icon: PiPencilSimpleDuotone,
+  // },
   {
     title: "Text",
     icon: RxText,
   },
-  {
-    title: "Word Cloud",
-    icon: AiFillCloud,
-  },
+  // {
+  //   title: "Word Cloud",
+  //   icon: AiFillCloud,
+  // },
 ];
 
 const Tabs: React.FC<TabsProps> = ({ chooseTab, currentTab }) => {
