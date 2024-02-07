@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Tabs from "./Tabs";
 import Content from "./Content";
+import { fabricContext } from "@/store/context";
 
 interface MenuProps {}
 
 const Menu: React.FC<MenuProps> = () => {
-  const [currentTab, setCurrentTab] = React.useState("Products");
+  const { elementType } = useContext(fabricContext);
+  const [currentTab, setCurrentTab] = React.useState(elementType);
 
   const chooseTab = (tab: string) => {
     setCurrentTab(tab);

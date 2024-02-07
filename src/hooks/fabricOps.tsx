@@ -21,8 +21,14 @@ const useFabricOps = () => {
     obj.set("fill", "red");
   };
 
-  const removeText = (object: fabric.Text) => {
-    canvas?.remove(object);
+  const removeText = () => {
+    if (canvas) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject && activeObject.type === "text") {
+        canvas.remove(activeObject);
+        canvas.requestRenderAll();
+      }
+    }
   };
 
   return {

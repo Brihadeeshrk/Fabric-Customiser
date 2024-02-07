@@ -1,15 +1,19 @@
 import React, { useContext } from "react";
 import { fabric } from "fabric";
 import { Image } from "@chakra-ui/react";
+import { MdDelete } from "react-icons/md";
+import { Icon } from "@chakra-ui/react";
 import useFabricOps from "@/hooks/fabricOps";
-import { Button } from "../ui/button";
 import { fabricContext } from "@/store/context";
 
 type FabricCanvasProps = {};
 
 const FabricCanvas: React.FC<FabricCanvasProps> = () => {
   const [canvas, setCanvas] = React.useState<fabric.Canvas>();
-  const { storeCanvas } = useContext(fabricContext);
+  const [isVisible, setIsVisible] = React.useState(false);
+  const { storeCanvas, storeElementType } = useContext(fabricContext);
+
+  const { removeText } = useFabricOps();
 
   React.useEffect(() => {
     const c = new fabric.Canvas("canvas", {
@@ -26,26 +30,45 @@ const FabricCanvas: React.FC<FabricCanvasProps> = () => {
     setCanvas(c);
     storeCanvas(c);
 
+    c.on("mouse:down", onSelectionChange);
+    c.on("selection:created", onSelectionChange);
+    c.on("selection:updated", onSelectionChange);
+    c.on("selection:cleared", onSelectionChange);
+
+    function onSelectionChange(event: fabric.IEvent) {
+      const activeObject = event.target;
+      if (activeObject && activeObject.type === "text") {
+        storeElementType("Text");
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    }
+
+    c.on("object:modified", (event: any) => {
+      const modifiedObject = event.target;
+      if (modifiedObject instanceof fabric.Text) {
+        setIsVisible(true);
+        console.log(
+          `Text has been resized to ${modifiedObject.width}x${modifiedObject.height} pixels`
+        );
+      }
+    });
+
     return () => {
       c.dispose();
     };
   }, []);
 
-  //   const addRect = (canvas?: fabric.Canvas) => {
-  //     const rect = new fabric.Rect({
-  //       height: 280,
-  //       width: 200,
-  //       stroke: "#2BEBC8",
-  //     });
-  //     canvas?.add(rect);
-  //     canvas?.requestRenderAll();
-  //   };
-
-  const { addRect, addText } = useFabricOps();
-
   return (
     <>
-      {/* <Button onClick={() => addRect(canvas)}>Rectangle</Button> */}
+      <Icon
+        onClick={removeText}
+        as={MdDelete}
+        fontSize={30}
+        color={isVisible ? "red" : "gray"}
+      />
+
       <div className="h-full flex justify-center items-center">
         <Image
           src="/assets/tshirt.png"

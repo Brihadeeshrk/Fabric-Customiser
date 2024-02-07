@@ -10,7 +10,7 @@ const Editor: React.FC<EditorProps> = () => {
       <div className="w-1/4 p-3">
         <Menu />
       </div>
-      <div className="w-3/4 p-3 bg-fabric-container">
+      <div className="w-3/4 p-3 bg-fabric-container h-full">
         <FabricCanvas />
       </div>
     </div>
