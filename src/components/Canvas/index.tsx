@@ -11,7 +11,8 @@ type FabricCanvasProps = {};
 const FabricCanvas: React.FC<FabricCanvasProps> = () => {
   const [canvas, setCanvas] = React.useState<fabric.Canvas>();
   const [isVisible, setIsVisible] = React.useState(false);
-  const { storeCanvas, storeElementType } = useContext(fabricContext);
+  const { storeCanvas, storeElementType, switchTab } =
+    useContext(fabricContext);
 
   const { removeText } = useFabricOps();
 
@@ -40,6 +41,7 @@ const FabricCanvas: React.FC<FabricCanvasProps> = () => {
       if (activeObject && activeObject.type === "text") {
         storeElementType("Text");
         setIsVisible(true);
+        switchTab("Text");
       } else {
         setIsVisible(false);
       }

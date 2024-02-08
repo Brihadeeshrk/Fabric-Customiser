@@ -4,8 +4,10 @@ import { fabric } from "fabric";
 export const fabricContext = React.createContext({
   canvas: undefined as fabric.Canvas | undefined,
   storeCanvas: (canvas: fabric.Canvas) => {},
-  elementType: "Products",
+  elementType: "",
   storeElementType: (type: string) => {},
+  tab: "Products",
+  switchTab: (tab: string) => {},
 });
 
 interface fabricContextProviderProps {
@@ -19,6 +21,7 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     undefined
   );
   const [elementType, setElementType] = React.useState("");
+  const [tab, setTab] = React.useState("Products");
 
   const storeCanvas = (canvas: fabric.Canvas) => {
     setCanvas(canvas);
@@ -28,11 +31,17 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     setElementType(type);
   };
 
+  const switchTab = (tab: string) => {
+    setTab(tab);
+  };
+
   const value = {
     canvas,
     storeCanvas,
     elementType,
     storeElementType,
+    tab,
+    switchTab,
   };
 
   return (

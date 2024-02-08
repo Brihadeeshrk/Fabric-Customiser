@@ -21,10 +21,10 @@ interface Tab {
 }
 
 const TabOptions: Array<Tab> = [
-  // {
-  //   title: "Products",
-  //   icon: AiOutlineShoppingCart,
-  // },
+  {
+    title: "Products",
+    icon: AiOutlineShoppingCart,
+  },
   // {
   //   title: "Assets",
   //   icon: AiTwotoneCamera,
