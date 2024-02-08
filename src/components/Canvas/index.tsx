@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
-import { fabric } from "fabric";
-import { Image } from "@chakra-ui/react";
-import { MdDelete } from "react-icons/md";
-import { Icon } from "@chakra-ui/react";
 import useFabricOps from "@/hooks/fabricOps";
 import { fabricContext } from "@/store/context";
+import { Icon, Image } from "@chakra-ui/react";
+import { fabric } from "fabric";
+import React, { useContext } from "react";
+import { MdDelete } from "react-icons/md";
 
 type FabricCanvasProps = {};
 
@@ -14,7 +13,7 @@ const FabricCanvas: React.FC<FabricCanvasProps> = () => {
   const { storeCanvas, storeElementType, switchTab } =
     useContext(fabricContext);
 
-  const { removeText } = useFabricOps();
+  const { removeObject, addImage } = useFabricOps();
 
   React.useEffect(() => {
     const c = new fabric.Canvas("canvas", {
@@ -38,10 +37,22 @@ const FabricCanvas: React.FC<FabricCanvasProps> = () => {
 
     function onSelectionChange(event: fabric.IEvent) {
       const activeObject = event.target;
-      if (activeObject && activeObject.type === "text") {
-        storeElementType("Text");
+      if (activeObject) {
+        switch (activeObject.type) {
+          case "image":
+            switchTab("Upload");
+
+            break;
+
+          case "text":
+            switchTab("Text");
+
+            break;
+
+          default:
+            switchTab("Products");
+        }
         setIsVisible(true);
-        switchTab("Text");
       } else {
         setIsVisible(false);
       }
@@ -65,7 +76,7 @@ const FabricCanvas: React.FC<FabricCanvasProps> = () => {
   return (
     <>
       <Icon
-        onClick={removeText}
+        onClick={removeObject}
         as={MdDelete}
         fontSize={30}
         color={isVisible ? "red" : "gray"}

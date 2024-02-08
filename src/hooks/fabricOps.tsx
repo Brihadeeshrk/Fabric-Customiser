@@ -21,10 +21,25 @@ const useFabricOps = () => {
     obj.set("fill", "red");
   };
 
-  const removeText = () => {
+  const addImage = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imgSrc = e.target?.result as string;
+      fabric.Image.fromURL(
+        imgSrc,
+        (img) => {
+          canvas?.add(img);
+        },
+        { crossOrigin: "anonymous" }
+      );
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeObject = () => {
     if (canvas) {
       const activeObject = canvas.getActiveObject();
-      if (activeObject && activeObject.type === "text") {
+      if (activeObject) {
         canvas.remove(activeObject);
         canvas.requestRenderAll();
       }
@@ -34,7 +49,8 @@ const useFabricOps = () => {
   return {
     addRect,
     addText,
-    removeText,
+    removeObject,
+    addImage,
   };
 };
 export default useFabricOps;
