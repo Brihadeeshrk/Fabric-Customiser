@@ -14,11 +14,11 @@ const useFabricOps = () => {
     canvas?.requestRenderAll();
   };
 
-  const addText = (text: string) => {
+  const addText = (text: string, color: string) => {
     const obj = new fabric.Text(text, { left: 100, top: 100 });
     canvas?.add(obj);
     canvas?.requestRenderAll();
-    obj.set("fill", "red");
+    obj.set("fill", `${color}`);
   };
 
   const addImage = (file: File) => {
@@ -44,12 +44,16 @@ const useFabricOps = () => {
     textObject.set("text", newText);
     canvas?.renderAll();
   };
+  const updateColor = (textObject: fabric.Text, color: string) => {
+    textObject.set("fill", `${color}`);
+  };
 
   return {
     addRect,
     addText,
     addImage,
     updateText,
+    updateColor,
   };
 };
 export default useFabricOps;
