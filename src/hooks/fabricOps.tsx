@@ -40,21 +40,16 @@ const useFabricOps = () => {
     reader.readAsDataURL(file);
   };
 
-  const removeObject = () => {
-    if (canvas) {
-      const activeObject = canvas.getActiveObject();
-      if (activeObject) {
-        canvas.remove(activeObject);
-        canvas.requestRenderAll();
-      }
-    }
+  const updateText = (textObject: fabric.Text, newText: string) => {
+    textObject.set("text", newText);
+    canvas?.renderAll();
   };
 
   return {
     addRect,
     addText,
-    removeObject,
     addImage,
+    updateText,
   };
 };
 export default useFabricOps;
