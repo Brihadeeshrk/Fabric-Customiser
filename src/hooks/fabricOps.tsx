@@ -28,7 +28,11 @@ const useFabricOps = () => {
       fabric.Image.fromURL(
         imgSrc,
         (img) => {
-          canvas?.add(img);
+          const imgWidth = img.width ?? 1;
+          const imgHeight = img.height ?? 1;
+          const scale = Math.min(200 / imgWidth, 200 / imgHeight);
+          img.scale(scale);
+          canvas?.add(img).renderAll();
         },
         { crossOrigin: "anonymous" }
       );
