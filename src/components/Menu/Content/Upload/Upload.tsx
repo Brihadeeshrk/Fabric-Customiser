@@ -1,7 +1,7 @@
-// import { Button } from "@/components/ui/button";
-import useFabricOps from "@/hooks/fabricOps";
 import { Button, Flex, Image } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import useFabricOps from "@/hooks/fabricOps";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { fabricContext } from "@/store/context";
 
 interface UploadProps {
   onImageSelect: (file: File) => void;
@@ -11,7 +11,29 @@ const Upload: React.FC<UploadProps> = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileButtonRef = useRef<HTMLInputElement>(null);
-  const { addImage } = useFabricOps(); // Import useFabricOps hook directly
+  const { canvas } = useContext(fabricContext);
+  const { addImage } = useFabricOps();
+
+  useEffect(() => {
+    const handleSelectionChange = () => {
+      const activeObject = canvas?.getActiveObject();
+      if (activeObject instanceof window.fabric.Image) {
+        setSelectedImage((activeObject as fabric.Image).toDataURL({}));
+      } else {
+        setSelectedImage(null);
+      }
+    };
+
+    canvas?.on("selection:updated", handleSelectionChange);
+    canvas?.on("selection:created", handleSelectionChange);
+    canvas?.on("selection:cleared", handleSelectionChange);
+
+    return () => {
+      canvas?.off("selection:updated", handleSelectionChange);
+      canvas?.off("selection:created", handleSelectionChange);
+      canvas?.off("selection:cleared", handleSelectionChange);
+    };
+  }, [canvas]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -32,8 +54,18 @@ const Upload: React.FC<UploadProps> = () => {
 
   const handleContinue = () => {
     if (selectedFile) {
-      addImage(selectedFile); // Call addImage function with selected image URL
+      addImage(selectedFile);
     }
+  };
+
+  const handleChangeImage = () => {
+    setSelectedImage(null);
+    fileButtonRef.current?.click();
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+    setSelectedFile(null);
   };
 
   return (
@@ -43,12 +75,8 @@ const Upload: React.FC<UploadProps> = () => {
           <Flex direction="column" align="center">
             <Image width={"50%"} src={selectedImage} alt="Selected" />
             <Flex mt={3} width="100%" justify={"space-evenly"}>
-              <Button
-                bg="red"
-                color={"white"}
-                onClick={handleChooseAnotherImage}
-              >
-                Choose Another Image
+              <Button bg="black" color={"white"} onClick={handleChangeImage}>
+                Change Image
               </Button>
               <Button bg="black" color={"white"} onClick={handleContinue}>
                 Continue

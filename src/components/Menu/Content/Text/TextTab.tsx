@@ -1,18 +1,17 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useFabricOps from "@/hooks/fabricOps";
 import { fabricContext } from "@/store/context";
+import { Select } from "@chakra-ui/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   MdFormatBold,
   MdFormatItalic,
   MdFormatUnderlined,
-  MdFormatStrikethrough,
 } from "react-icons/md";
-import { Input } from "@/components/ui/input";
 import TextProperties from "./TextProperties";
-import { Select } from "@chakra-ui/react";
 
 interface TextTabProps {}
 
