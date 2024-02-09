@@ -72,12 +72,10 @@ const FabricCanvas: React.FC = () => {
         switch (activeObject.type) {
           case "image":
             switchTab("Upload");
-
             break;
 
           case "text":
             switchTab("Text");
-
             break;
 
           default:

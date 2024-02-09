@@ -15,7 +15,12 @@ const useFabricOps = () => {
   };
 
   const addText = (text: string, color: string) => {
-    const obj = new fabric.Text(text, { left: 100, top: 100 });
+    const obj = new fabric.Text(text, {
+      left: 100,
+      top: 100,
+      fontSize: 36,
+      fontFamily: "Arial",
+    });
     canvas?.add(obj);
     canvas?.requestRenderAll();
     obj.set("fill", `${color}`);
@@ -44,6 +49,7 @@ const useFabricOps = () => {
     textObject.set("text", newText);
     canvas?.renderAll();
   };
+
   const updateColor = (textObject: fabric.Text, color: string) => {
     textObject.set("fill", `${color}`);
   };

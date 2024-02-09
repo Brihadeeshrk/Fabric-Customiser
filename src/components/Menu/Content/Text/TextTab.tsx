@@ -8,11 +8,36 @@ import {
   MdFormatBold,
   MdFormatItalic,
   MdFormatUnderlined,
+  MdFormatStrikethrough,
 } from "react-icons/md";
 import { Input } from "@/components/ui/input";
 import TextProperties from "./TextProperties";
+import { Select } from "@chakra-ui/react";
 
 interface TextTabProps {}
+
+const fonts: Array<string> = [
+  "Arial",
+  "Geneva",
+  "Helvetica",
+  "Lobster",
+  "Verdana",
+  "Times New Roman",
+  "Montserrat",
+  "Pr Sans",
+  "Ubuntu",
+  "Open Sans",
+  "Playfair Display",
+  "Comic Book",
+  "Oxyzen",
+  "Play",
+  "Gloria Hallelujah",
+  "Amaranth",
+  "Arcade",
+  "Handlee",
+  "Domin",
+  "Satisfy",
+];
 
 const TextTab: React.FC<TextTabProps> = () => {
   const { addText, updateText, updateColor } = useFabricOps();
@@ -25,8 +50,9 @@ const TextTab: React.FC<TextTabProps> = () => {
   const [isBoldActive, setIsBoldActive] = useState<boolean>(false);
   const [isItalicActive, setIsItalicActive] = useState<boolean>(false);
   const [isUnderlineActive, setIsUnderlineActive] = useState<boolean>(false);
+  const [selectedFontFamily, setSelectedFontFamily] = useState<string>("Arial");
   const [opacity, setOpacity] = useState<number>(1);
-  const [fontSize, setFontSize] = useState(20);
+  const [fontSize, setFontSize] = useState(36);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -42,6 +68,7 @@ const TextTab: React.FC<TextTabProps> = () => {
         );
         setIsItalicActive(activeObject.fontStyle === "italic");
         setIsUnderlineActive(!!activeObject.underline);
+
         setOpacity(activeObject.opacity || 1);
       } else {
         setTextValue("");
@@ -153,18 +180,52 @@ const TextTab: React.FC<TextTabProps> = () => {
     }
   };
 
+  const handleFontFamilyChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedFontFamily = event.target.value;
+    setSelectedFontFamily(selectedFontFamily);
+
+    const activeObject = canvas?.getActiveObject() as fabric.Text;
+    if (activeObject && activeObject.type === "text") {
+      activeObject.set("fontFamily", selectedFontFamily);
+      canvas?.requestRenderAll();
+    }
+  };
+
   return (
     <div className="space-y-4">
-      <Input
-        ref={inputRef}
-        value={textValue}
-        onChange={onChangeHandler}
-        type="text"
-        placeholder="Enter text"
-      />
+      <div>
+        <p className="text-sm text-gray-600">
+          {selectedObject && isUpdateMode
+            ? "Update text."
+            : "Enter text below."}
+        </p>
+        <Input
+          ref={inputRef}
+          value={textValue}
+          onChange={onChangeHandler}
+          type="text"
+          placeholder="Enter text"
+        />
+      </div>
 
       {selectedObject && selectedObject.type === "text" && (
         <div className="space-y-4">
+          <div>
+            <p className="text-sm text-gray-600">Choose font family</p>
+            <Select
+              value={selectedFontFamily}
+              onChange={handleFontFamilyChange}
+            >
+              {fonts.map((font) => (
+                <option key={font} value={font}>
+                  {font}
+                </option>
+              ))}
+            </Select>
+          </div>
+
           <div className="flex">
             <ToggleGroup type="multiple" variant="outline">
               <ToggleGroupItem
@@ -218,7 +279,7 @@ const TextTab: React.FC<TextTabProps> = () => {
             </div>
           )}
           <div className="flex items-center">
-            <p className="mr-3">Transparency:</p>
+            <p className="mr-3 text-sm text-gray-600">Transparency:</p>
             <input
               type="range"
               min="0"
@@ -231,9 +292,20 @@ const TextTab: React.FC<TextTabProps> = () => {
         </div>
       )}
 
-      <Button onClick={handleButtonClick}>
-        {isUpdateMode ? "Update" : "Add Text"}
-      </Button>
+      <div className="flex space-x-5">
+        <Button onClick={handleButtonClick}>
+          {isUpdateMode ? "Update" : "Add Text"}
+        </Button>
+
+        {isUpdateMode && (
+          <Button
+            variant="destructive"
+            onClick={() => canvas?.remove(selectedObject)}
+          >
+            Delete Text
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
