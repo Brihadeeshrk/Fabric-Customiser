@@ -13,7 +13,7 @@ const TextTab: React.FC<TextTabProps> = () => {
   const [textValue, setTextValue] = useState<string>("");
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const selectedObject = canvas?.getActiveObject() as fabric.Text;
-  const [color, setColor] = React.useState("#ddd");
+  const [color, setColor] = React.useState("#000");
   const [isPickerVisible, setIsPickerVisible] = React.useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,6 +65,10 @@ const TextTab: React.FC<TextTabProps> = () => {
       canvas?.requestRenderAll();
     }
   };
+  const handleHexInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newColor = event.target.value;
+    handleColorChange(newColor);
+  };
   return (
     <div className="space-y-4">
       <Input
@@ -77,12 +81,22 @@ const TextTab: React.FC<TextTabProps> = () => {
       <Button onClick={handleButtonClick}>
         {isUpdateMode ? "Update" : "Add Text"}
       </Button>
-      <div
-        className={`w-9 h-9 cursor-pointer border border-black rounded-sm `}
-        style={{ backgroundColor: color }}
-        onClick={toggleColorPicker}
-        title="Click to change color"
-      />
+      <div className="flex align-center justify-center">
+        <input
+          type="text"
+          value={color.toUpperCase()}
+          onChange={handleHexInputChange}
+          className="border-b border-black bg-transparent p-1 w-[100px] outline-none mr-4"
+          placeholder="#FFFFFF"
+        />
+        <div
+          className={`w-9 h-9 cursor-pointer border border-black rounded-sm `}
+          style={{ backgroundColor: color }}
+          onClick={toggleColorPicker}
+          title="Click to change color"
+        />
+      </div>
+
       {isPickerVisible && (
         <div>
           <HexColorPicker color={color} onChange={handleColorChange} />
