@@ -27,7 +27,7 @@ const TextTab: React.FC<TextTabProps> = () => {
       if (activeObject && activeObject.type === "text") {
         setTextValue(activeObject.text || "");
         setIsUpdateMode(true);
-        setColor(color);
+        setColor((activeObject.fill as string) || "#000");
         setIsBoldActive(
           activeObject.fontWeight === "bold" || activeObject.fontWeight === 700
         );
@@ -38,6 +38,7 @@ const TextTab: React.FC<TextTabProps> = () => {
         setTextValue("");
         setIsUpdateMode(false);
         setOpacity(1);
+        setColor("#000");
       }
     };
 
@@ -49,6 +50,7 @@ const TextTab: React.FC<TextTabProps> = () => {
       setIsItalicActive(false);
       setIsUnderlineActive(false);
       setOpacity(1);
+      setColor("#000");
     });
 
     return () => {
