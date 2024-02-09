@@ -4,7 +4,8 @@ import { fabric } from "fabric";
 import React, { useContext, useEffect, useState } from "react";
 const FabricCanvas: React.FC = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const { storeCanvas } = useContext(fabricContext);
+  const { storeCanvas, switchTab } = useContext(fabricContext);
+
   useEffect(() => {
     const initCanvas = new fabric.Canvas("canvas", {
       height: 600,
@@ -58,6 +59,42 @@ const FabricCanvas: React.FC = () => {
     };
     setCanvas(initCanvas);
     storeCanvas(initCanvas);
+
+    initCanvas.on("mouse:down", onSelectionChange);
+    initCanvas.on("selection:created", onSelectionChange);
+    initCanvas.on("selection:updated", onSelectionChange);
+    initCanvas.on("selection:cleared", onSelectionChange);
+
+    function onSelectionChange(event: fabric.IEvent) {
+      const activeObject = event.target;
+      console.log(activeObject);
+      if (activeObject) {
+        switch (activeObject.type) {
+          case "image":
+            switchTab("Upload");
+
+            break;
+
+          case "text":
+            switchTab("Text");
+
+            break;
+
+          default:
+            switchTab("Products");
+        }
+      }
+    }
+
+    initCanvas.on("object:modified", (event: any) => {
+      const modifiedObject = event.target;
+      if (modifiedObject instanceof fabric.Text) {
+        console.log(
+          `Text has been resized to ${modifiedObject.width}x${modifiedObject.height} pixels`
+        );
+      }
+    });
+
     return () => {
       initCanvas.dispose();
     };
