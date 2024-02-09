@@ -83,37 +83,38 @@ const TextTab: React.FC<TextTabProps> = () => {
     const newColor = event.target.value;
     handleColorChange(newColor);
   };
-  const toggleBold = () => {
-    const activeObject = canvas?.getActiveObject() as fabric.Text;
-    if (activeObject && activeObject.type === "text") {
-      const isBold =
-        activeObject.fontWeight === "bold" || activeObject.fontWeight === 700;
-      activeObject.set("fontWeight", isBold ? "normal" : "bold");
+  enum TextStyleType {
+    Bold = "bold",
+    Italic = "italic",
+    Underline = "underline",
+  }
 
-      setIsBoldActive(!isBoldActive);
-      canvas?.requestRenderAll();
-    }
-  };
-  const toggleItalic = () => {
+  const toggleTextStyle = (styleType: TextStyleType) => {
     const activeObject = canvas?.getActiveObject() as fabric.Text;
-    if (activeObject?.type === "text") {
-      const isItalic = activeObject.fontStyle === "italic";
-      activeObject.set("fontStyle", isItalic ? "" : "italic");
+    if (activeObject?.type !== "text") return;
 
-      setIsItalicActive(!isItalicActive);
-      canvas?.requestRenderAll();
+    switch (styleType) {
+      case TextStyleType.Bold:
+        const isBold =
+          activeObject.fontWeight === "bold" || activeObject.fontWeight === 700;
+        activeObject.set("fontWeight", isBold ? "normal" : "bold");
+        setIsBoldActive(!isBoldActive);
+        break;
+      case TextStyleType.Italic:
+        const isItalic = activeObject.fontStyle === "italic";
+        activeObject.set("fontStyle", isItalic ? "" : "italic");
+        setIsItalicActive(!isItalicActive);
+        break;
+      case TextStyleType.Underline:
+        const isUnderline = !!activeObject.underline;
+        activeObject.set("underline", !isUnderline);
+        setIsUnderlineActive(!isUnderlineActive);
+        break;
     }
+
+    canvas?.requestRenderAll();
   };
 
-  const toggleUnderline = () => {
-    const activeObject = canvas?.getActiveObject() as fabric.Text;
-    if (activeObject?.type === "text") {
-      const isUnderline = activeObject.underline;
-      activeObject.set("underline", !isUnderline);
-      setIsUnderlineActive(!isUnderlineActive);
-      canvas?.requestRenderAll();
-    }
-  };
   return (
     <div className="space-y-4">
       <Input
@@ -152,7 +153,7 @@ const TextTab: React.FC<TextTabProps> = () => {
           className={`w-9 h-9 flex font-bold items-center justify-center cursor-pointer border border-black rounded-sm ${
             isBoldActive ? "bg-gray-700 text-white" : "bg-gray-300 text-black"
           }`}
-          onClick={toggleBold}
+          onClick={() => toggleTextStyle(TextStyleType.Bold)}
         >
           B
         </div>
@@ -160,7 +161,7 @@ const TextTab: React.FC<TextTabProps> = () => {
           className={`w-9 h-9 flex items-center italic justify-center cursor-pointer border border-black rounded-sm ${
             isItalicActive ? "bg-gray-700 text-white" : "bg-gray-300 text-black"
           }`}
-          onClick={toggleItalic}
+          onClick={() => toggleTextStyle(TextStyleType.Italic)}
         >
           I
         </div>
@@ -170,7 +171,7 @@ const TextTab: React.FC<TextTabProps> = () => {
               ? "bg-gray-700 text-white"
               : "bg-gray-300 text-black"
           }`}
-          onClick={toggleUnderline}
+          onClick={() => toggleTextStyle(TextStyleType.Underline)}
         >
           U
         </div>
