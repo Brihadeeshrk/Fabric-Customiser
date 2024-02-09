@@ -18,7 +18,7 @@ const TextTab: React.FC<TextTabProps> = () => {
   const [isBoldActive, setIsBoldActive] = React.useState(false);
   const [isItalicActive, setIsItalicActive] = React.useState(false);
   const [isUnderlineActive, setIsUnderlineActive] = React.useState(false);
-
+  const [opacity, setOpacity] = useState(1);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -27,15 +27,18 @@ const TextTab: React.FC<TextTabProps> = () => {
       if (activeObject && activeObject.type === "text") {
         setTextValue(activeObject.text || "");
         setIsUpdateMode(true);
-        setColor(color);
+        setColor((activeObject.fill as string) || "#000");
         setIsBoldActive(
           activeObject.fontWeight === "bold" || activeObject.fontWeight === 700
         );
         setIsItalicActive(activeObject.fontStyle === "italic");
         setIsUnderlineActive(!!activeObject.underline);
+        setOpacity(activeObject.opacity || 1);
       } else {
         setTextValue("");
         setIsUpdateMode(false);
+        setOpacity(1);
+        setColor("#000");
       }
     };
 
@@ -46,6 +49,8 @@ const TextTab: React.FC<TextTabProps> = () => {
       setIsBoldActive(false);
       setIsItalicActive(false);
       setIsUnderlineActive(false);
+      setOpacity(1);
+      setColor("#000");
     });
 
     return () => {
@@ -114,6 +119,16 @@ const TextTab: React.FC<TextTabProps> = () => {
 
     canvas?.requestRenderAll();
   };
+  const handleOpacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newOpacity = parseFloat(e.target.value);
+    setOpacity(newOpacity);
+
+    const activeObject = canvas?.getActiveObject() as fabric.Text;
+    if (activeObject && activeObject.type === "text") {
+      activeObject.set({ opacity: newOpacity });
+      canvas?.requestRenderAll();
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -174,6 +189,19 @@ const TextTab: React.FC<TextTabProps> = () => {
           onClick={() => toggleTextStyle(TextStyleType.Underline)}
         >
           U
+        </div>
+      </div>
+      <div>
+        transparency:
+        <div>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={opacity}
+            onChange={handleOpacityChange}
+          />
         </div>
       </div>
     </div>
