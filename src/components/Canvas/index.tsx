@@ -4,7 +4,7 @@ import { fabric } from "fabric";
 import React, { useContext, useEffect, useState } from "react";
 const FabricCanvas: React.FC = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const { storeCanvas, switchTab } = useContext(fabricContext);
+  const { storeCanvas, switchTab, currentTshirt } = useContext(fabricContext);
 
   useEffect(() => {
     const initCanvas = new fabric.Canvas("canvas", {
@@ -104,7 +104,7 @@ const FabricCanvas: React.FC = () => {
     <>
       <div className="h-full flex justify-center items-center">
         <Image
-          src="/assets/tshirt.png"
+          src={currentTshirt}
           height={500}
           width={500}
           alt="Tshirt"

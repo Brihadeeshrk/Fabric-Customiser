@@ -8,6 +8,8 @@ export const fabricContext = React.createContext({
   storeElementType: (type: string) => {},
   tab: "Products",
   switchTab: (tab: string) => {},
+  currentTshirt: "",
+  storeCurrentTshirt: (tshirt: string) => {},
 });
 
 interface fabricContextProviderProps {
@@ -22,6 +24,8 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
   );
   const [elementType, setElementType] = React.useState("");
   const [tab, setTab] = React.useState("Products");
+  const [currentTshirt, setCurrentTshirt] =
+    React.useState<string>("/assets/tshirt.png");
 
   const storeCanvas = (canvas: fabric.Canvas) => {
     setCanvas(canvas);
@@ -35,6 +39,10 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     setTab(tab);
   };
 
+  const storeCurrentTshirt = (tshirt: string) => {
+    setCurrentTshirt(tshirt);
+  };
+
   const value = {
     canvas,
     storeCanvas,
@@ -42,6 +50,8 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     storeElementType,
     tab,
     switchTab,
+    currentTshirt,
+    storeCurrentTshirt,
   };
 
   return (
