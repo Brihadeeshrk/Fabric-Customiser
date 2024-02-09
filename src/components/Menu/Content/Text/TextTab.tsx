@@ -15,6 +15,9 @@ const TextTab: React.FC<TextTabProps> = () => {
   const selectedObject = canvas?.getActiveObject() as fabric.Text;
   const [color, setColor] = React.useState("#000");
   const [isPickerVisible, setIsPickerVisible] = React.useState(false);
+  const [isBoldActive, setIsBoldActive] = React.useState(false);
+  const [isItalicActive, setIsItalicActive] = React.useState(false);
+  const [isUnderlineActive, setIsUnderlineActive] = React.useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -25,6 +28,11 @@ const TextTab: React.FC<TextTabProps> = () => {
         setTextValue(activeObject.text || "");
         setIsUpdateMode(true);
         setColor(color);
+        setIsBoldActive(
+          activeObject.fontWeight === "bold" || activeObject.fontWeight === 700
+        );
+        setIsItalicActive(activeObject.fontStyle === "italic");
+        setIsUnderlineActive(!!activeObject.underline);
       } else {
         setTextValue("");
         setIsUpdateMode(false);
@@ -34,11 +42,17 @@ const TextTab: React.FC<TextTabProps> = () => {
     canvas?.on("selection:cleared", handleSelectionChange);
     canvas?.on("selection:updated", handleSelectionChange);
     canvas?.on("selection:created", handleSelectionChange);
+    canvas?.on("selection:cleared", () => {
+      setIsBoldActive(false);
+      setIsItalicActive(false);
+      setIsUnderlineActive(false);
+    });
 
     return () => {
       canvas?.off("selection:cleared", handleSelectionChange);
       canvas?.off("selection:updated", handleSelectionChange);
       canvas?.off("selection:created", handleSelectionChange);
+      canvas?.off("selection:cleared");
     };
   }, [canvas]);
 
@@ -68,6 +82,37 @@ const TextTab: React.FC<TextTabProps> = () => {
   const handleHexInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newColor = event.target.value;
     handleColorChange(newColor);
+  };
+  const toggleBold = () => {
+    const activeObject = canvas?.getActiveObject() as fabric.Text;
+    if (activeObject && activeObject.type === "text") {
+      const isBold =
+        activeObject.fontWeight === "bold" || activeObject.fontWeight === 700;
+      activeObject.set("fontWeight", isBold ? "normal" : "bold");
+
+      setIsBoldActive(!isBoldActive);
+      canvas?.requestRenderAll();
+    }
+  };
+  const toggleItalic = () => {
+    const activeObject = canvas?.getActiveObject() as fabric.Text;
+    if (activeObject?.type === "text") {
+      const isItalic = activeObject.fontStyle === "italic";
+      activeObject.set("fontStyle", isItalic ? "" : "italic");
+
+      setIsItalicActive(!isItalicActive);
+      canvas?.requestRenderAll();
+    }
+  };
+
+  const toggleUnderline = () => {
+    const activeObject = canvas?.getActiveObject() as fabric.Text;
+    if (activeObject?.type === "text") {
+      const isUnderline = activeObject.underline;
+      activeObject.set("underline", !isUnderline);
+      setIsUnderlineActive(!isUnderlineActive);
+      canvas?.requestRenderAll();
+    }
   };
   return (
     <div className="space-y-4">
@@ -102,6 +147,34 @@ const TextTab: React.FC<TextTabProps> = () => {
           <HexColorPicker color={color} onChange={handleColorChange} />
         </div>
       )}
+      <div className="flex space-x-2 justify-center">
+        <div
+          className={`w-9 h-9 flex font-bold items-center justify-center cursor-pointer border border-black rounded-sm ${
+            isBoldActive ? "bg-gray-700 text-white" : "bg-gray-300 text-black"
+          }`}
+          onClick={toggleBold}
+        >
+          B
+        </div>
+        <div
+          className={`w-9 h-9 flex items-center italic justify-center cursor-pointer border border-black rounded-sm ${
+            isItalicActive ? "bg-gray-700 text-white" : "bg-gray-300 text-black"
+          }`}
+          onClick={toggleItalic}
+        >
+          I
+        </div>
+        <div
+          className={`w-9 h-9 flex underline items-center justify-center cursor-pointer border border-black rounded-sm ${
+            isUnderlineActive
+              ? "bg-gray-700 text-white"
+              : "bg-gray-300 text-black"
+          }`}
+          onClick={toggleUnderline}
+        >
+          U
+        </div>
+      </div>
     </div>
   );
 };
