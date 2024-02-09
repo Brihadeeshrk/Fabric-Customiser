@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import useFabricOps from "@/hooks/fabricOps";
 import { fabricContext } from "@/store/context";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  MdFormatBold,
+  MdFormatItalic,
+  MdFormatUnderlined,
+} from "react-icons/md";
+import { Input } from "@/components/ui/input";
+import TextProperties from "./TextProperties";
 
 interface TextTabProps {}
 
@@ -13,12 +20,14 @@ const TextTab: React.FC<TextTabProps> = () => {
   const [textValue, setTextValue] = useState<string>("");
   const [isUpdateMode, setIsUpdateMode] = useState<boolean>(false);
   const selectedObject = canvas?.getActiveObject() as fabric.Text;
-  const [color, setColor] = React.useState("#000");
-  const [isPickerVisible, setIsPickerVisible] = React.useState(false);
-  const [isBoldActive, setIsBoldActive] = React.useState(false);
-  const [isItalicActive, setIsItalicActive] = React.useState(false);
-  const [isUnderlineActive, setIsUnderlineActive] = React.useState(false);
-  const [opacity, setOpacity] = useState(1);
+  const [color, setColor] = useState<string>("#000");
+  const [isPickerVisible, setIsPickerVisible] = useState<boolean>(false);
+  const [isBoldActive, setIsBoldActive] = useState<boolean>(false);
+  const [isItalicActive, setIsItalicActive] = useState<boolean>(false);
+  const [isUnderlineActive, setIsUnderlineActive] = useState<boolean>(false);
+  const [opacity, setOpacity] = useState<number>(1);
+  const [fontSize, setFontSize] = useState(20);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -64,6 +73,7 @@ const TextTab: React.FC<TextTabProps> = () => {
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextValue(e.target.value);
   };
+
   const toggleColorPicker = () => {
     setIsPickerVisible(!isPickerVisible);
   };
@@ -76,18 +86,30 @@ const TextTab: React.FC<TextTabProps> = () => {
     }
     setTextValue("");
   };
-  const handleColorChange = (newColor: string) => {
-    setColor(newColor);
-    const selectedObject = canvas?.getActiveObject() as fabric.Text;
-    if (selectedObject && selectedObject.type === "text") {
-      updateColor(selectedObject, newColor);
+
+  const handleFontSizeChange = (newFontSize: number) => {
+    setFontSize(newFontSize);
+    const activeObject = canvas?.getActiveObject() as fabric.Text;
+    if (activeObject && activeObject.type === "text") {
+      activeObject.set("fontSize", newFontSize);
       canvas?.requestRenderAll();
     }
   };
+
+  const handleColorChange = (newColor: string) => {
+    setColor(newColor);
+    const activeObject = canvas?.getActiveObject() as fabric.Text;
+    if (activeObject && activeObject.type === "text") {
+      updateColor(activeObject, newColor);
+      canvas?.requestRenderAll();
+    }
+  };
+
   const handleHexInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newColor = event.target.value;
     handleColorChange(newColor);
   };
+
   enum TextStyleType {
     Bold = "bold",
     Italic = "italic",
@@ -119,6 +141,7 @@ const TextTab: React.FC<TextTabProps> = () => {
 
     canvas?.requestRenderAll();
   };
+
   const handleOpacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newOpacity = parseFloat(e.target.value);
     setOpacity(newOpacity);
@@ -139,71 +162,78 @@ const TextTab: React.FC<TextTabProps> = () => {
         type="text"
         placeholder="Enter text"
       />
+
+      {selectedObject && selectedObject.type === "text" && (
+        <div className="space-y-4">
+          <div className="flex">
+            <ToggleGroup type="multiple" variant="outline">
+              <ToggleGroupItem
+                value="bold"
+                aria-label="Toggle bold"
+                onClick={() => toggleTextStyle(TextStyleType.Bold)}
+              >
+                <MdFormatBold className="h-4 w-4" />
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value="italic"
+                aria-label="Toggle italic"
+                onClick={() => toggleTextStyle(TextStyleType.Italic)}
+              >
+                <MdFormatItalic className="h-4 w-4" />
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                value="underline"
+                aria-label="Toggle underline"
+                onClick={() => toggleTextStyle(TextStyleType.Underline)}
+              >
+                <MdFormatUnderlined className="h-4 w-4" />
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+
+          <TextProperties
+            fontSize={fontSize}
+            onFontSizeChange={handleFontSizeChange}
+          />
+
+          <div className="flex align-center justify-center w-1/2">
+            <Input
+              type="text"
+              value={color.toUpperCase()}
+              onChange={handleHexInputChange}
+              className="border-b border-b-black bg-transparent p-1 w-full outline-none mr-4"
+              placeholder="#FFFFFF"
+            />
+            <div
+              className={`w-9 h-9 cursor-pointer border border-black rounded-sm `}
+              style={{ backgroundColor: color }}
+              onClick={toggleColorPicker}
+              title="Click to change color"
+            />
+          </div>
+
+          {isPickerVisible && (
+            <div>
+              <HexColorPicker color={color} onChange={handleColorChange} />
+            </div>
+          )}
+          <div className="flex items-center">
+            <p className="mr-3">Transparency:</p>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={opacity}
+              onChange={handleOpacityChange}
+            />
+          </div>
+        </div>
+      )}
+
       <Button onClick={handleButtonClick}>
         {isUpdateMode ? "Update" : "Add Text"}
       </Button>
-      <div className="flex align-center justify-center">
-        <input
-          type="text"
-          value={color.toUpperCase()}
-          onChange={handleHexInputChange}
-          className="border-b border-black bg-transparent p-1 w-[100px] outline-none mr-4"
-          placeholder="#FFFFFF"
-        />
-        <div
-          className={`w-9 h-9 cursor-pointer border border-black rounded-sm `}
-          style={{ backgroundColor: color }}
-          onClick={toggleColorPicker}
-          title="Click to change color"
-        />
-      </div>
-
-      {isPickerVisible && (
-        <div>
-          <HexColorPicker color={color} onChange={handleColorChange} />
-        </div>
-      )}
-      <div className="flex space-x-2 justify-center">
-        <div
-          className={`w-9 h-9 flex font-bold items-center justify-center cursor-pointer border border-black rounded-sm ${
-            isBoldActive ? "bg-gray-700 text-white" : "bg-gray-300 text-black"
-          }`}
-          onClick={() => toggleTextStyle(TextStyleType.Bold)}
-        >
-          B
-        </div>
-        <div
-          className={`w-9 h-9 flex items-center italic justify-center cursor-pointer border border-black rounded-sm ${
-            isItalicActive ? "bg-gray-700 text-white" : "bg-gray-300 text-black"
-          }`}
-          onClick={() => toggleTextStyle(TextStyleType.Italic)}
-        >
-          I
-        </div>
-        <div
-          className={`w-9 h-9 flex underline items-center justify-center cursor-pointer border border-black rounded-sm ${
-            isUnderlineActive
-              ? "bg-gray-700 text-white"
-              : "bg-gray-300 text-black"
-          }`}
-          onClick={() => toggleTextStyle(TextStyleType.Underline)}
-        >
-          U
-        </div>
-      </div>
-      <div>
-        transparency:
-        <div>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={opacity}
-            onChange={handleOpacityChange}
-          />
-        </div>
-      </div>
     </div>
   );
 };
