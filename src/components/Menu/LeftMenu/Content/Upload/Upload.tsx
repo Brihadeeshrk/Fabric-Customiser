@@ -2,14 +2,18 @@ import { Button, Flex, Image, Input } from "@chakra-ui/react";
 import useFabricOps from "@/hooks/fabricOps";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { fabricContext } from "@/store/context";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
-interface UploadProps {
-  onImageSelect: (file: File) => void;
-}
+const radioOptions: Array<string> = [
+  "Grayscale",
+  "Sepia",
+  "Invert",
+  "Emboss",
+  "Sharpen",
+];
 
-const Upload: React.FC<UploadProps> = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+const Upload: React.FC = () => {
   const [imageWidth, setImageWidth] = useState<number | null>(null);
   const [imageHeight, setImageHeight] = useState<number | null>(null);
   const fileButtonRef = useRef<HTMLInputElement>(null);
@@ -21,11 +25,9 @@ const Upload: React.FC<UploadProps> = () => {
       const activeObject = canvas?.getActiveObject();
       if (activeObject instanceof window.fabric.Image) {
         const image = activeObject as fabric.Image;
-        setSelectedImage(image.toDataURL({}));
         setImageWidth(image.width || 0);
         setImageHeight(image.height || 0);
       } else {
-        setSelectedImage(null);
         setImageWidth(null);
         setImageHeight(null);
       }
@@ -48,35 +50,22 @@ const Upload: React.FC<UploadProps> = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const imgSrc = e.target?.result as string;
-        setSelectedImage(imgSrc);
+        addImage(file);
       };
       reader.readAsDataURL(file);
-      setSelectedFile(file);
-    }
-  };
-
-  const handleChooseAnotherImage = () => {
-    setSelectedImage(null);
-    setImageWidth(null);
-    setImageHeight(null);
-  };
-
-  const handleContinue = () => {
-    if (selectedFile) {
-      addImage(selectedFile);
     }
   };
 
   const handleChangeImage = () => {
-    setSelectedImage(null);
-    setImageWidth(null);
-    setImageHeight(null);
+    handleRemoveImage();
     fileButtonRef.current?.click();
   };
 
   const handleRemoveImage = () => {
-    setSelectedImage(null);
-    setSelectedFile(null);
+    const activeObject = canvas?.getActiveObject() as fabric.Image;
+    if (activeObject) {
+      canvas?.remove(activeObject);
+    }
     setImageWidth(null);
     setImageHeight(null);
   };
@@ -107,32 +96,49 @@ const Upload: React.FC<UploadProps> = () => {
 
   return (
     <div>
-      {selectedImage ? (
+      {canvas?.getActiveObject() instanceof window.fabric.Image ? (
         <>
-          <Flex direction="column" align="center">
-            <Image width={"50%"} src={selectedImage} alt="Selected" />
-            <Flex mt={3} width="100%" justify={"space-evenly"}>
-              <Input
-                type="number"
-                value={imageWidth || 0}
-                onChange={handleWidthChange}
-                placeholder="Width"
-              />
-              <Input
-                type="number"
-                value={imageHeight || 0}
-                onChange={handleHeightChange}
-                placeholder="Height"
-              />
+          <Flex direction="column" align="center" gap={6}>
+            <Image
+              width={"50%"}
+              src={canvas?.getActiveObject()?.toDataURL({})}
+              alt="Selected"
+            />
+            <Flex mt={3} justify={"space-evenly"} className="space-x-3">
+              <div>
+                <p className="text-sm text-gray-700">Width</p>
+                <Input
+                  type="number"
+                  value={imageWidth || 0}
+                  onChange={handleWidthChange}
+                  placeholder="Width"
+                />
+              </div>
+              <div>
+                <p className="text-sm text-gray-700">Height</p>
+                <Input
+                  type="number"
+                  value={imageHeight || 0}
+                  onChange={handleHeightChange}
+                  placeholder="Height"
+                />
+              </div>
             </Flex>
-            <Flex mt={3} width="100%" justify={"space-evenly"}>
-              <Button bg="black" color={"white"} onClick={handleChangeImage}>
-                Change Image
-              </Button>
-              <Button bg="black" color={"white"} onClick={handleContinue}>
-                Continue
-              </Button>
-            </Flex>
+
+            <RadioGroup defaultValue="comfortable">
+              <div className="grid grid-cols-3 gap-3">
+                {radioOptions.map((option, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <RadioGroupItem value={option} id={`r${index}`} />
+                    <Label htmlFor={`r${index}`}>{option}</Label>
+                  </div>
+                ))}
+              </div>
+            </RadioGroup>
+
+            <Button bg="red" color={"white"} onClick={handleRemoveImage}>
+              Remove Image
+            </Button>
           </Flex>
         </>
       ) : (
@@ -152,13 +158,6 @@ const Upload: React.FC<UploadProps> = () => {
             onChange={handleFileChange}
           />
         </>
-      )}
-      {selectedImage && (
-        <Flex mt={3} width="100%" justify={"space-evenly"}>
-          <Button bg="red" color={"white"} onClick={handleRemoveImage}>
-            Remove Image
-          </Button>
-        </Flex>
       )}
     </div>
   );
