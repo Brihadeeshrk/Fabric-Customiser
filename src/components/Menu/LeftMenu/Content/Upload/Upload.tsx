@@ -2,20 +2,21 @@ import { Button, Flex, Image, Input } from "@chakra-ui/react";
 import useFabricOps from "@/hooks/fabricOps";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { fabricContext } from "@/store/context";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
+import { fabric } from "fabric";
+
 import { Label } from "@/components/ui/label";
 
 const radioOptions: Array<string> = [
   "Grayscale",
   "Sepia",
   "Invert",
-  "Emboss",
-  "Sharpen",
+  "Pixelate",
 ];
-
 const Upload: React.FC = () => {
   const [imageWidth, setImageWidth] = useState<number | null>(null);
   const [imageHeight, setImageHeight] = useState<number | null>(null);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const fileButtonRef = useRef<HTMLInputElement>(null);
   const { canvas } = useContext(fabricContext);
   const { addImage } = useFabricOps();
@@ -68,6 +69,7 @@ const Upload: React.FC = () => {
     }
     setImageWidth(null);
     setImageHeight(null);
+    setActiveFilters([]);
   };
 
   const handleWidthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +93,22 @@ const Upload: React.FC = () => {
         activeObject.set("height", height);
         canvas?.requestRenderAll();
       }
+    }
+  };
+
+  const handleFilterChange = (filters: string[]) => {
+    setActiveFilters(filters);
+    const activeObject = canvas?.getActiveObject() as fabric.Image;
+    if (activeObject) {
+      const validFilters = filters.filter(
+        (filter) => filter in fabric.Image.filters
+      );
+
+      activeObject.filters = validFilters.map(
+        (filter) => new (fabric.Image.filters as any)[filter]()
+      );
+      activeObject.applyFilters();
+      canvas?.requestRenderAll();
     }
   };
 
@@ -125,16 +143,23 @@ const Upload: React.FC = () => {
               </div>
             </Flex>
 
-            <RadioGroup defaultValue="comfortable">
-              <div className="grid grid-cols-3 gap-3">
-                {radioOptions.map((option, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <RadioGroupItem value={option} id={`r${index}`} />
-                    <Label htmlFor={`r${index}`}>{option}</Label>
-                  </div>
-                ))}
-              </div>
-            </RadioGroup>
+            <div className="space-y-2">
+              <p className="text-sm text-gray-700">Filters</p>
+
+              <CheckboxGroup
+                onChange={handleFilterChange}
+                value={activeFilters}
+              >
+                <div className="grid grid-cols-3 gap-3">
+                  {radioOptions.map((option, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <Checkbox value={option} id={`r${index}`} />
+                      <Label htmlFor={`r${index}`}>{option}</Label>
+                    </div>
+                  ))}
+                </div>
+              </CheckboxGroup>
+            </div>
 
             <Button bg="red" color={"white"} onClick={handleRemoveImage}>
               Remove Image
