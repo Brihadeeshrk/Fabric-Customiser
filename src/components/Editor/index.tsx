@@ -23,9 +23,9 @@ const Editor: React.FC<EditorProps> = () => {
       </div>
 
       <div className="flex flex-col w-3/4 p-3">
-        <div className="flex space-x-5">
+        <TopMenu />
+        <div className="flex space-x-5 mt-5">
           <div className="p-5 w-11/12 bg-fabric-container">
-            <TopMenu />
             <FabricCanvas />
           </div>
           <RightMenu />
