@@ -67,7 +67,7 @@ const FabricCanvas: React.FC = () => {
 
     function onSelectionChange(event: fabric.IEvent) {
       const activeObject = event.target;
-      console.log(activeObject);
+
       if (activeObject) {
         switch (activeObject.type) {
           case "image":
