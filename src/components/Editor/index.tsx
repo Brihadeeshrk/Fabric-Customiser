@@ -2,7 +2,9 @@ import { fabricContext } from "@/store/context";
 import { Image } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import FabricCanvas from "../Canvas";
-import Menu from "../Menu";
+import Menu from "../Menu/LeftMenu";
+import TopMenu from "../Menu/TopMenu/TopMenu";
+import RightMenu from "../Menu/RightMenu/RightMenu";
 
 interface EditorProps {}
 
@@ -21,9 +23,14 @@ const Editor: React.FC<EditorProps> = () => {
       </div>
 
       <div className="flex flex-col w-3/4 p-3">
-        <div className="bg-fabric-container h-full">
-          <FabricCanvas />
+        <div className="flex space-x-5">
+          <div className="p-5 w-11/12 bg-fabric-container">
+            <TopMenu />
+            <FabricCanvas />
+          </div>
+          <RightMenu />
         </div>
+
         <div className="flex items-center justify-center mt-3">
           {imageAssets.map((asset) => (
             <Image

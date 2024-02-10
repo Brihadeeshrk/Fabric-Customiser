@@ -8,8 +8,8 @@ const FabricCanvas: React.FC = () => {
 
   useEffect(() => {
     const initCanvas = new fabric.Canvas("canvas", {
-      height: 600,
-      width: 600,
+      height: 500,
+      width: 500,
     });
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = "#2BEBC8";

@@ -15,9 +15,10 @@ interface TabsProps {
   chooseTab: (tab: string) => void;
 }
 
-interface Tab {
+export interface Tab {
   title: string;
   icon: typeof Icon.arguments;
+  onClick?: () => void;
 }
 
 const TabOptions: Array<Tab> = [
