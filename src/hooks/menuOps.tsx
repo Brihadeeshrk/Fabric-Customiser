@@ -1,13 +1,15 @@
 import { useContext } from "react";
 import { fabricContext } from "@/store/context";
 import { fabric } from "fabric";
+import useCanvasUndoRedo from "./CanvasUndoRedo";
 
 interface ExtendedCanvas extends fabric.Canvas {
   clipboard?: fabric.Object[];
 }
 
 const useMenuOps = () => {
-  const { canvas } = useContext(fabricContext);
+  const { canvas, currentTshirt } = useContext(fabricContext);
+  const { saveCanvasState, undo, redo } = useCanvasUndoRedo();
 
   const copyObject = () => {
     if (canvas) {
@@ -32,6 +34,7 @@ const useMenuOps = () => {
         canvas?.discardActiveObject();
         canvas?.renderAll();
       }
+      saveCanvasState(canvas);
     }
   };
 
@@ -50,6 +53,7 @@ const useMenuOps = () => {
           canvas?.requestRenderAll();
         }
       }
+      saveCanvasState(canvas);
     }
   };
 
@@ -68,6 +72,7 @@ const useMenuOps = () => {
           canvas?.requestRenderAll();
         }
       }
+      saveCanvasState(canvas);
     }
   };
 
@@ -87,6 +92,7 @@ const useMenuOps = () => {
         }
       });
       canvas?.requestRenderAll();
+      saveCanvasState(canvas);
     }
   };
 
@@ -101,7 +107,72 @@ const useMenuOps = () => {
 
   const emptyCanvas = () => {
     canvas?.clear();
+    if (canvas) saveCanvasState(canvas);
   };
+
+  const save = (canvas: fabric.Canvas) => {
+    // Store canvas contents in local storage
+    const canvasData = JSON.stringify(canvas.toObject());
+    localStorage.setItem("canvasData", canvasData);
+
+    // Log elements present with their positions on the canvas
+    const canvasObjects = canvas.getObjects().map((obj) => ({
+      type: obj.type,
+      position: { left: obj.left, top: obj.top },
+      // Add more properties as needed
+    }));
+    console.log("Canvas Objects:", canvasObjects);
+  };
+
+  const print = (canvas: fabric.Canvas) => {
+    // Open print preview
+    window.print();
+  };
+
+  const downloadAsPNG = (canvas: fabric.Canvas) => {
+    const dataURL = canvas.toDataURL({ format: "png" });
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "canvas.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // const downloadAsPNG = async (
+  //   canvas: fabric.Canvas,
+  //   currentTshirt?: string
+  // ) => {
+  //   // Render the canvas with its elements
+  //   canvas.renderAll();
+
+  //   // Load the t-shirt image
+  //   fabric.Image.fromURL("./assets/tshirt.png", (tshirtImage) => {
+  //     // Set t-shirt image dimensions
+  //     tshirtImage.scaleToWidth(canvas.width || 100);
+  //     tshirtImage.scaleToHeight(canvas.height || 100);
+
+  //     // Add the t-shirt image to the canvas
+  //     canvas.add(tshirtImage);
+
+  //     // Render the canvas with the t-shirt image
+  //     canvas.renderAll();
+
+  //     // Generate PNG data URL with the overlaid canvas and t-shirt image
+  //     const dataURL = canvas.toDataURL({ format: "png" });
+
+  //     // Download the combined canvas and t-shirt image as a PNG file
+  //     const link = document.createElement("a");
+  //     link.href = dataURL;
+  //     link.download = "canvas_with_image.png";
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+
+  //     // Remove the t-shirt image from the canvas after downloading
+  //     canvas.remove(tshirtImage);
+  //   });
+  // };
 
   return {
     copyObject,
@@ -112,6 +183,9 @@ const useMenuOps = () => {
     lockLayer,
     unlockLayer,
     emptyCanvas,
+    save,
+    print,
+    downloadAsPNG,
   };
 };
 
