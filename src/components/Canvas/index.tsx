@@ -20,8 +20,8 @@ const FabricCanvas: React.FC = () => {
     "Front Left Chest": { width: 50, height: 50, top: 25, left: 51 },
     "Front Right Chest": { width: 50, height: 50, top: 25, left: 46 },
     "Front Center": { width: 125, height: 150, top: 22, left: 46 },
-    "Left Sleeve": { width: 40, height: 40, top: 26, left: 40.5 },
-    "Right Sleeve": { width: 40, height: 40, top: 26, left: 56 },
+    "Left Sleeve": { width: 70, height: 40, top: 74, left: 48 },
+    "Right Sleeve": { width: 70, height: 40, top: 74, left: 47.5 },
     "Back Neck": { width: 80, height: 30, top: 10, left: 47.5 },
     "Back Center": { width: 125, height: 150, top: 22, left: 46 },
   };

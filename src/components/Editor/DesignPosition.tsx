@@ -52,6 +52,13 @@ const DesignPosition: React.FC = () => {
     } else {
       storeCurrentTshirt("/assets/tshirt.png");
     }
+
+    if (position.includes("Left Sleeve")) {
+      storeCurrentTshirt("/assets/tshirt-left.png");
+    }
+    if (position.includes("Right Sleeve")) {
+      storeCurrentTshirt("/assets/tshirt-right.png");
+    }
   };
 
   return (
