@@ -107,80 +107,81 @@ const Upload: React.FC = () => {
     }
   };
 
-  return (
-    <div>
-      {canvas?.getActiveObject() instanceof window.fabric.Image ? (
-        <>
-          <Flex direction="column" align="center" gap={6}>
-            <Image
-              width={"50%"}
-              src={canvas?.getActiveObject()?.toDataURL({})}
-              alt="Selected"
-            />
-            <Flex mt={3} justify={"space-evenly"} className="space-x-3">
-              <div>
-                <p className="text-sm text-gray-700">Width</p>
-                <Input
-                  type="number"
-                  value={imageWidth || 0}
-                  onChange={handleWidthChange}
-                  placeholder="Width"
-                />
-              </div>
-              <div>
-                <p className="text-sm text-gray-700">Height</p>
-                <Input
-                  type="number"
-                  value={imageHeight || 0}
-                  onChange={handleHeightChange}
-                  placeholder="Height"
-                />
-              </div>
-            </Flex>
-
-            <div className="space-y-2">
-              <p className="text-sm text-gray-700">Filters</p>
-
-              <CheckboxGroup
-                onChange={handleFilterChange}
-                value={activeFilters}
-              >
-                <div className="grid grid-cols-3 gap-3">
-                  {radioOptions.map((option, index) => (
-                    <div key={index} className="flex items-center space-x-2">
-                      <Checkbox value={option} id={`r${index}`} />
-                      <Label htmlFor={`r${index}`}>{option}</Label>
-                    </div>
-                  ))}
+  if (typeof window !== "undefined")
+    return (
+      <div>
+        {canvas?.getActiveObject() instanceof window.fabric.Image ? (
+          <>
+            <Flex direction="column" align="center" gap={6}>
+              <Image
+                width={"50%"}
+                src={canvas?.getActiveObject()?.toDataURL({})}
+                alt="Selected"
+              />
+              <Flex mt={3} justify={"space-evenly"} className="space-x-3">
+                <div>
+                  <p className="text-sm text-gray-700">Width</p>
+                  <Input
+                    type="number"
+                    value={imageWidth || 0}
+                    onChange={handleWidthChange}
+                    placeholder="Width"
+                  />
                 </div>
-              </CheckboxGroup>
-            </div>
+                <div>
+                  <p className="text-sm text-gray-700">Height</p>
+                  <Input
+                    type="number"
+                    value={imageHeight || 0}
+                    onChange={handleHeightChange}
+                    placeholder="Height"
+                  />
+                </div>
+              </Flex>
 
-            <Button bg="red" color={"white"} onClick={handleRemoveImage}>
-              Remove Image
+              <div className="space-y-2">
+                <p className="text-sm text-gray-700">Filters</p>
+
+                <CheckboxGroup
+                  onChange={handleFilterChange}
+                  value={activeFilters}
+                >
+                  <div className="grid grid-cols-3 gap-3">
+                    {radioOptions.map((option, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <Checkbox value={option} id={`r${index}`} />
+                        <Label htmlFor={`r${index}`}>{option}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </CheckboxGroup>
+              </div>
+
+              <Button bg="red" color={"white"} onClick={handleRemoveImage}>
+                Remove Image
+              </Button>
+            </Flex>
+          </>
+        ) : (
+          <>
+            <Button
+              bg="black"
+              color={"white"}
+              onClick={() => fileButtonRef.current?.click()}
+            >
+              Upload Image
             </Button>
-          </Flex>
-        </>
-      ) : (
-        <>
-          <Button
-            bg="black"
-            color={"white"}
-            onClick={() => fileButtonRef.current?.click()}
-          >
-            Upload Image
-          </Button>
-          <input
-            hidden
-            ref={fileButtonRef}
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </>
-      )}
-    </div>
-  );
+            <input
+              hidden
+              ref={fileButtonRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </>
+        )}
+      </div>
+    );
 };
 
 export default Upload;

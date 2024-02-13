@@ -10,6 +10,8 @@ export const fabricContext = React.createContext({
   switchTab: (tab: string) => {},
   currentTshirt: "",
   storeCurrentTshirt: (tshirt: string) => {},
+  customisationType: "",
+  storeCustomisationType: (type: string) => {},
 });
 
 interface fabricContextProviderProps {
@@ -26,6 +28,7 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
   const [tab, setTab] = React.useState("Upload Image");
   const [currentTshirt, setCurrentTshirt] =
     React.useState<string>("/assets/tshirt.png");
+  const [customisationType, setCustomisationType] = React.useState("");
 
   const storeCanvas = (canvas: fabric.Canvas) => {
     setCanvas(canvas);
@@ -43,6 +46,10 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     setCurrentTshirt(tshirt);
   };
 
+  const storeCustomisationType = (type: string) => {
+    setCustomisationType(type);
+  };
+
   const value = {
     canvas,
     storeCanvas,
@@ -52,6 +59,8 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     switchTab,
     currentTshirt,
     storeCurrentTshirt,
+    customisationType,
+    storeCustomisationType,
   };
 
   return (

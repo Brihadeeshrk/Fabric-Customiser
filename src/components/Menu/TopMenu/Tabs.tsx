@@ -2,7 +2,8 @@ import React from "react";
 
 import useMenuOps from "@/hooks/menuOps";
 import { Button, Icon, Tooltip } from "@chakra-ui/react";
-import { IoIosSave } from "react-icons/io";
+import { IoIosPrint, IoIosSave } from "react-icons/io";
+import { IoDownloadSharp } from "react-icons/io5";
 import {
   FaCopy,
   FaLock,
@@ -55,6 +56,24 @@ const Tabs: React.FC = () => {
       onClick: () => emptyCanvas(),
     },
   ];
+
+  const OperationButtons: Array<Tab> = [
+    {
+      title: "Print",
+      icon: IoIosPrint,
+      onClick: () => {},
+    },
+    {
+      title: "Download as PNG",
+      icon: IoDownloadSharp,
+      onClick: () => {},
+    },
+    {
+      title: "Save and Proceed to Cart",
+      icon: IoIosSave,
+      onClick: () => {},
+    },
+  ];
   return (
     <div className="flex space-x-8">
       <div className="space-x-5 flex">
@@ -74,10 +93,24 @@ const Tabs: React.FC = () => {
             <p className="text-sm">{tab.title}</p>
           </Button>
         ))}
-        <Button>
-          <Icon as={IoIosSave} fontSize={25} mr={3} />
-          <p className="text-sm">Save and Proceed to Cart</p>
-        </Button>
+
+        <div className="space-x-5 flex">
+          {OperationButtons.map((tab) => (
+            <Button
+              onClick={tab.onClick}
+              border={"1px"}
+              borderColor={"gray.300"}
+              p={3}
+              key={tab.title}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <Icon fontSize={25} as={tab.icon} mr={3} />
+              <p className="text-sm">{tab.title}</p>
+            </Button>
+          ))}
+        </div>
       </div>
     </div>
   );
