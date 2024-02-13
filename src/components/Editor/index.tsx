@@ -1,9 +1,12 @@
+import { Button, Icon } from "@chakra-ui/react";
 import React from "react";
+import { IoIosSave } from "react-icons/io";
 import FabricCanvas from "../Canvas";
 import Menu from "../Menu/LeftMenu";
 import TopMenu from "../Menu/TopMenu/TopMenu";
 import Customisation from "./Customisation";
 import DesignPosition from "./DesignPosition";
+import Notes from "./Notes";
 
 interface EditorProps {}
 
@@ -25,6 +28,21 @@ const Editor: React.FC<EditorProps> = () => {
         </div>
 
         <DesignPosition />
+        <Notes />
+
+        <div className="w-11/12 flex justify-end">
+          <Button
+            p={3}
+            bg={"#F6BE00"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            _hover={{ opacity: 0.7 }}
+          >
+            <Icon fontSize={25} as={IoIosSave} mr={3} />
+            <p className="text-sm">Save and Go to Cart</p>
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,6 @@
 import React from "react";
-
 import useMenuOps from "@/hooks/menuOps";
-import { Button, Icon, Tooltip } from "@chakra-ui/react";
-import { IoIosPrint, IoIosSave } from "react-icons/io";
-import { IoDownloadSharp } from "react-icons/io5";
+import { Button, Icon } from "@chakra-ui/react";
 import {
   FaCopy,
   FaLock,
@@ -11,6 +8,8 @@ import {
   FaPaste,
   FaRegTrashAlt,
 } from "react-icons/fa";
+import { IoIosPrint } from "react-icons/io";
+import { IoDownloadSharp } from "react-icons/io5";
 import { LuFlipHorizontal2 } from "react-icons/lu";
 import { Tab } from "../LeftMenu/Tabs";
 
@@ -66,11 +65,6 @@ const Tabs: React.FC = () => {
     {
       title: "Download as PNG",
       icon: IoDownloadSharp,
-      onClick: () => {},
-    },
-    {
-      title: "Save and Proceed to Cart",
-      icon: IoIosSave,
       onClick: () => {},
     },
   ];

@@ -56,7 +56,11 @@ const DesignPosition: React.FC = () => {
             }`}
             key={asset.position}
           >
-            <p className={`text-center text-md text-gray-700`}>
+            <p
+              className={`transition-all text-center text-md text-gray-700 ${
+                currentTshirt === asset.image ? "text-blue-500 font-bold" : ""
+              }`}
+            >
               {asset.position}
             </p>
             <Image
