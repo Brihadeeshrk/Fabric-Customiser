@@ -13,6 +13,7 @@ import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 import "@fontsource/inter/800.css";
 import "@fontsource/inter/900.css";
+import { HydrationProvider, Client } from "react-hydration-provider";
 
 const theme = extendTheme({
   fonts: {
@@ -22,13 +23,17 @@ const theme = extendTheme({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <FabricContextProvider>
-      <div>
-        <Toaster />
-      </div>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </FabricContextProvider>
+    <HydrationProvider>
+      <Client>
+        <FabricContextProvider>
+          <div>
+            <Toaster />
+          </div>
+          <ChakraProvider theme={theme}>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </FabricContextProvider>
+      </Client>
+    </HydrationProvider>
   );
 }

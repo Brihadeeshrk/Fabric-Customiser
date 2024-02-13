@@ -1,20 +1,29 @@
 import { fabricContext } from "@/store/context";
-import { Box, Image } from "@chakra-ui/react";
+import { Image } from "@chakra-ui/react";
 import { fabric } from "fabric";
 import React, { useContext, useEffect, useState } from "react";
 
-const FabricCanvas: React.FC = () => {
+const RightPocket: React.FC = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const [top, setTop] = useState(0);
-  const [left, setLeft] = useState(0);
+  const [canvasMeasurements, setCanvasMeasurements] = useState<{
+    width: number;
+    height: number;
+    top: number;
+    left: number;
+  }>({
+    height: 200,
+    width: 200,
+    top: 0,
+    left: 0,
+  });
 
   const { storeCanvas, switchTab, currentDesignPosition } =
     useContext(fabricContext);
 
   useEffect(() => {
     const initCanvas = new fabric.Canvas("canvas", {
-      height: 200,
-      width: 200,
+      height: 100,
+      width: 100,
     });
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = "#2BEBC8";
@@ -102,50 +111,13 @@ const FabricCanvas: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (canvas) {
-      let canvasWidth = 200;
-      let canvasHeight = 200;
-      let canvasTop = 0;
-      let canvasLeft = 0;
-
-      switch (currentDesignPosition) {
-        case "Front Left Chest":
-          canvasWidth = 50;
-          canvasHeight = 50;
-          setTop(20);
-          setLeft(40);
-          break;
-
-        default:
-          break;
-      }
-
-      canvas && canvas.setHeight(canvasHeight || 10);
-      canvas && canvas.setWidth(canvasWidth || 10);
-      canvas.renderAll();
-    }
-  }, [currentDesignPosition, canvas]);
-
   return (
     <>
-      {currentDesignPosition}
-      <div className="h-[500px] flex relative">
-        <Image
-          src={"/assets/tshirt.png"}
-          height={500}
-          width={500}
-          alt="Tshirt"
-          className="absolute"
-          justifySelf={"center"}
-        />
-
-        <canvas
-          id="canvas"
-          className={`border-dashed border-2 border-red-500 h-full absolute`}
-        ></canvas>
-      </div>
+      <canvas
+        id="canvas"
+        className={`border-dashed border-2 border-red-500 h-full top-0`}
+      ></canvas>
     </>
   );
 };
-export default FabricCanvas;
+export default RightPocket;
