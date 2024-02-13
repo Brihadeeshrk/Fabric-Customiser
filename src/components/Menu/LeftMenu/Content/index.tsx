@@ -14,17 +14,17 @@ interface ContentProps {
 const Content: React.FC<ContentProps> = ({ currentTab }) => {
   return (
     <div className="w-full flex-col items-center justify-center space-y-7">
-      <p className="text-xl uppercase text-gray-700 font-semibold text-center">
+      <p className="text-xl text-gray-700 font-semibold text-center">
         {currentTab}
       </p>
 
       <div>
         {currentTab === "Products" && <Products />}
         {currentTab === "Assets" && <Assets />}
-        {currentTab === "Upload" && <Upload />}
+        {currentTab === "Upload Image" && <Upload />}
         {currentTab === "QRCode" && <Qrcode />}
         {currentTab === "Draw" && <Draw />}
-        {currentTab === "Text" && <TextTab />}
+        {currentTab === "Insert Text" && <TextTab />}
         {currentTab === "Word Cloud" && <Wordcloud />}
       </div>
     </div>

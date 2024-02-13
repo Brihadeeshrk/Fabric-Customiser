@@ -71,15 +71,14 @@ const FabricCanvas: React.FC = () => {
       if (activeObject) {
         switch (activeObject.type) {
           case "image":
-            switchTab("Upload");
+            switchTab("Upload Image");
             break;
 
           case "text":
-            switchTab("Text");
+            switchTab("Insert Text");
             break;
 
           default:
-            switchTab("Products");
         }
       }
     }

@@ -1,49 +1,17 @@
-import React, { useContext } from "react";
-import { IoIosSave, IoIosPrint } from "react-icons/io";
-import { IoDownloadSharp } from "react-icons/io5";
-import { FaUndo, FaRedo } from "react-icons/fa";
 import { Button, Icon, Tooltip } from "@chakra-ui/react";
+import React, { useContext } from "react";
+import { IoIosPrint, IoIosSave } from "react-icons/io";
+import { IoDownloadSharp } from "react-icons/io5";
 import { Tab } from "../LeftMenu/Tabs";
 
-import useFabricOps from "@/hooks/fabricOps";
-import { fabricContext } from "@/store/context";
 import useMenuOps from "@/hooks/menuOps";
+import { fabricContext } from "@/store/context";
 
 const Tabs: React.FC = () => {
-  const { save, print, downloadAsPNG } = useMenuOps();
-  const { undo, redo } = useFabricOps();
+  const { print, downloadAsPNG } = useMenuOps();
   const { canvas } = useContext(fabricContext);
-  const ActionTabs: Array<Tab> = [
-    {
-      title: "Undo",
-      icon: FaUndo,
-      onClick: () => {
-        if (canvas) {
-          undo(canvas);
-        }
-      },
-    },
-    {
-      title: "Redo",
-      icon: FaRedo,
-      onClick: () => {
-        if (canvas) {
-          redo(canvas);
-        }
-      },
-    },
-  ];
 
   const TabOptions: Array<Tab> = [
-    {
-      title: "Save",
-      icon: IoIosSave,
-      onClick: () => {
-        if (canvas) {
-          save(canvas);
-        }
-      },
-    },
     {
       title: "Print",
       icon: IoIosPrint,
@@ -74,23 +42,12 @@ const Tabs: React.FC = () => {
               borderColor={"gray.300"}
               p={3}
               bg={"white"}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
             >
-              <Icon fontSize={25} as={tab.icon} />
-            </Button>
-          </Tooltip>
-        ))}
-      </div>
-      <div className="space-y-5 flex flex-col pt-10">
-        {ActionTabs.map((tab) => (
-          <Tooltip label={tab.title} key={tab.title} placement="left">
-            <Button
-              onClick={tab.onClick}
-              border={"1px"}
-              borderColor={"gray.300"}
-              p={3}
-              bg={"white"}
-            >
-              <Icon fontSize={20} as={tab.icon} />
+              <Icon fontSize={25} as={tab.icon} mr={3} />
+              <p className="text-sm">{tab.title}</p>
             </Button>
           </Tooltip>
         ))}

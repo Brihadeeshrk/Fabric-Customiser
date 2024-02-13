@@ -1,4 +1,4 @@
-import { Icon } from "@chakra-ui/react";
+import { Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import {
   AiOutlineShoppingCart,
@@ -7,7 +7,7 @@ import {
   AiFillCloud,
   AiOutlineQrcode,
 } from "react-icons/ai";
-import { PiPencilSimpleDuotone } from "react-icons/pi";
+import { motion } from "framer-motion";
 import { RxText } from "react-icons/rx";
 
 interface TabsProps {
@@ -22,16 +22,16 @@ export interface Tab {
 }
 
 const TabOptions: Array<Tab> = [
-  {
-    title: "Products",
-    icon: AiOutlineShoppingCart,
-  },
+  // {
+  //   title: "Products",
+  //   icon: AiOutlineShoppingCart,
+  // },
   // {
   //   title: "Assets",
   //   icon: AiTwotoneCamera,
   // },
   {
-    title: "Upload",
+    title: "Upload Image",
     icon: AiOutlineCloudUpload,
   },
   // {
@@ -43,7 +43,7 @@ const TabOptions: Array<Tab> = [
   //   icon: PiPencilSimpleDuotone,
   // },
   {
-    title: "Text",
+    title: "Insert Text",
     icon: RxText,
   },
   // {
@@ -53,22 +53,49 @@ const TabOptions: Array<Tab> = [
 ];
 
 const Tabs: React.FC<TabsProps> = ({ chooseTab, currentTab }) => {
+  const [isHovered, setIsHovered] = React.useState(false);
+
   return (
     <div className="space-y-8">
       {TabOptions.map((tab) => (
         <div
-          className="flex items-center"
+          className="flex items-center relative"
           key={tab.title}
           onClick={() => chooseTab(tab.title)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <Icon
-            fontSize={34}
-            as={tab.icon}
-            color={currentTab === tab.title ? "blue.500" : "gray.500"}
-          />
+          <div
+            className="ml-2 mr-4"
+            style={{
+              transition: "background-color 0.2s",
+            }}
+          >
+            <Icon
+              fontSize={34}
+              as={tab.icon}
+              color={currentTab === tab.title ? "blue.500" : "gray.500"}
+            />
+          </div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2 }}
+            className="label"
+          >
+            <Text
+              fontWeight={600}
+              color={currentTab === tab.title ? "blue.500" : "gray.500"}
+              cursor={"pointer"}
+            >
+              {tab.title}
+            </Text>
+          </motion.div>
         </div>
       ))}
     </div>
   );
 };
+
 export default Tabs;

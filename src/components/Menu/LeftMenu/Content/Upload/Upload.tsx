@@ -57,11 +57,6 @@ const Upload: React.FC = () => {
     }
   };
 
-  const handleChangeImage = () => {
-    handleRemoveImage();
-    fileButtonRef.current?.click();
-  };
-
   const handleRemoveImage = () => {
     const activeObject = canvas?.getActiveObject() as fabric.Image;
     if (activeObject) {
