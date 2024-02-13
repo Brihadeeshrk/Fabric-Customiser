@@ -22,8 +22,8 @@ const useFabricOps = () => {
 
   const addText = (text: string, color: string) => {
     const obj = new fabric.Text(text, {
-      left: 100,
-      top: 100,
+      left: 0,
+      top: 0,
       fontSize: 36,
       fontFamily: "Arial",
     });

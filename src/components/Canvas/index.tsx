@@ -13,8 +13,8 @@ const FabricCanvas: React.FC = () => {
 
   useEffect(() => {
     const initCanvas = new fabric.Canvas("canvas", {
-      height: 200,
-      width: 200,
+      height: 150,
+      width: 150,
     });
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = "#2BEBC8";
@@ -101,49 +101,55 @@ const FabricCanvas: React.FC = () => {
       initCanvas.dispose();
     };
   }, []);
+const positionMapping = {
+  "Front Left Chest": { top: 25, left: 22, height: 50, width: 50 },
+  "Front Right Chest": { top: 25, left: 10, height: 50, width: 50 },
+  "Front Center": { top: 25, left: 13, height: 100, width: 100 },
+  "Left Sleeve": { top: 0, left: 0, height: 80, width: 80 },
+  "Right Sleeve": { top: 0, left: 0, height: 80, width: 80 },
+  "Back Neck": { top: 0, left: 0, height: 100, width: 100 },
+  "Back Center": { top: 25, left: 13, height: 100, width: 100 },
+};
 
-  useEffect(() => {
-    if (canvas) {
-      let canvasWidth = 200;
-      let canvasHeight = 200;
-      let canvasTop = 0;
-      let canvasLeft = 0;
+useEffect(() => {
+  if (canvas && currentDesignPosition) {
+    const positionConfig = positionMapping[currentDesignPosition as keyof typeof positionMapping];
+    
+    if (positionConfig) {
+      setTop(positionConfig.top);
+      setLeft(positionConfig.left);
 
-      switch (currentDesignPosition) {
-        case "Front Left Chest":
-          canvasWidth = 50;
-          canvasHeight = 50;
-          setTop(20);
-          setLeft(40);
-          break;
-
-        default:
-          break;
-      }
-
-      canvas && canvas.setHeight(canvasHeight || 10);
-      canvas && canvas.setWidth(canvasWidth || 10);
+      // Set canvas size
+      canvas.setHeight(positionConfig.height);
+      canvas.setWidth(positionConfig.width);
       canvas.renderAll();
     }
-  }, [currentDesignPosition, canvas]);
+  }
+}, [currentDesignPosition, canvas]);
 
   return (
     <>
-      {currentDesignPosition}
-      <div className="h-[500px] flex relative">
-        <Image
-          src={"/assets/tshirt.png"}
-          height={500}
-          width={500}
+     
+    <div className=" relative h-full flex  ">
+       <div>
+         {currentDesignPosition}
+         <Image
+           src={"/assets/tshirt.png"}
+          height={300}
+          width={300}
           alt="Tshirt"
-          className="absolute"
-          justifySelf={"center"}
+         // className="absolute"
         />
-
-        <canvas
+       </div>
+        <div className="absolute  z-10" style={{
+    top: `${top}%`, // Use state value for top
+    left: `${left}%`, // Use state value for left
+  }}>
+           <canvas
           id="canvas"
-          className={`border-dashed border-2 border-red-500 h-full absolute`}
+          className="border-dashed border-2 border-red-500 h-full "
         ></canvas>
+        </div>
       </div>
     </>
   );
