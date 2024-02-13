@@ -39,7 +39,8 @@ const designPositions: Array<designPositionOptions> = [
 ];
 
 const DesignPosition: React.FC = () => {
-  const { storeCurrentTshirt, currentTshirt } = useContext(fabricContext);
+  const { storeCurrentDesignPosition, currentDesignPosition } =
+    useContext(fabricContext);
 
   return (
     <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3 w-11/12">
@@ -49,8 +50,8 @@ const DesignPosition: React.FC = () => {
       <div className="flex items-center justify-center space-x-5">
         {designPositions.map((asset) => (
           <div
-            className={`w-[10%] border-2 p-2 ${
-              currentTshirt === asset.image
+            className={` w-[12%] border-2 p-2 ${
+              currentDesignPosition === asset.position
                 ? "border-blue-500"
                 : "border-gray-400"
             }`}
@@ -58,13 +59,15 @@ const DesignPosition: React.FC = () => {
           >
             <p
               className={`transition-all text-center text-md text-gray-700 ${
-                currentTshirt === asset.image ? "text-blue-500 font-bold" : ""
+                currentDesignPosition === asset.position
+                  ? "text-blue-500 font-bold"
+                  : ""
               }`}
             >
               {asset.position}
             </p>
             <Image
-              onClick={() => storeCurrentTshirt(asset.image)}
+              onClick={() => storeCurrentDesignPosition(asset.position)}
               cursor={"pointer"}
               src={asset.image}
               alt="image"

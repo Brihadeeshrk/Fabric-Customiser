@@ -2,14 +2,28 @@ import { fabricContext } from "@/store/context";
 import { Image } from "@chakra-ui/react";
 import { fabric } from "fabric";
 import React, { useContext, useEffect, useState } from "react";
+
 const FabricCanvas: React.FC = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const { storeCanvas, switchTab, currentTshirt } = useContext(fabricContext);
+  const [canvasMeasurements, setCanvasMeasurements] = useState<{
+    width: number;
+    height: number;
+    top: number;
+    left: number;
+  }>({
+    height: 200,
+    width: 200,
+    top: 0,
+    left: 0,
+  });
+
+  const { storeCanvas, switchTab, currentDesignPosition } =
+    useContext(fabricContext);
 
   useEffect(() => {
     const initCanvas = new fabric.Canvas("canvas", {
-      height: 500,
-      width: 500,
+      height: 200,
+      width: 200,
     });
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = "#2BEBC8";
@@ -97,11 +111,44 @@ const FabricCanvas: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (canvas) {
+      let canvasWidth = 200;
+      let canvasHeight = 200;
+      let canvasTop = 0;
+      let canvasLeft = 0;
+
+      switch (currentDesignPosition) {
+        case "Front Left Chest":
+          // setCanvasMeasurements({ height: 50, width: 50, top: 0, left: 0 });
+          canvasWidth = 50;
+          canvasHeight = 50;
+          canvasTop = 100;
+          canvasLeft = 400;
+          break;
+
+        default:
+          break;
+      }
+
+      canvas.setDimensions({
+        width: canvasWidth,
+        height: canvasHeight,
+      });
+      canvas.renderAll();
+    }
+  }, [currentDesignPosition]);
+
+  const topCondition = currentDesignPosition === "Front Left Chest" ? "" : "";
+  const leftCondition =
+    currentDesignPosition === "Front Left Chest" ? "-ml-3" : "";
+
   return (
     <>
-      <div className="h-full flex justify-center items-center">
+      {currentDesignPosition}
+      <div className="h-[500px] flex justify-center items-center">
         <Image
-          src={currentTshirt}
+          src={"/assets/tshirt.png"}
           height={500}
           width={500}
           alt="Tshirt"
@@ -109,7 +156,7 @@ const FabricCanvas: React.FC = () => {
         />
         <canvas
           id="canvas"
-          className="border-dashed border-2 border-red-500 h-full relative"
+          className={`${topCondition} ${leftCondition} border-dashed border-2 border-red-500 h-full`}
         ></canvas>
       </div>
     </>

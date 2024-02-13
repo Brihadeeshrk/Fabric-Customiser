@@ -8,8 +8,8 @@ export const fabricContext = React.createContext({
   storeElementType: (type: string) => {},
   tab: "Upload Image",
   switchTab: (tab: string) => {},
-  currentTshirt: "",
-  storeCurrentTshirt: (tshirt: string) => {},
+  currentDesignPosition: "",
+  storeCurrentDesignPosition: (position: string) => {},
   customisationType: "",
   storeCustomisationType: (type: string) => {},
 });
@@ -26,7 +26,7 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
   );
   const [elementType, setElementType] = React.useState("");
   const [tab, setTab] = React.useState("Upload Image");
-  const [currentTshirt, setCurrentTshirt] =
+  const [currentDesignPosition, setCurrentDesignPosition] =
     React.useState<string>("/assets/tshirt.png");
   const [customisationType, setCustomisationType] = React.useState("");
 
@@ -42,8 +42,8 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     setTab(tab);
   };
 
-  const storeCurrentTshirt = (tshirt: string) => {
-    setCurrentTshirt(tshirt);
+  const storeCurrentDesignPosition = (position: string) => {
+    setCurrentDesignPosition(position);
   };
 
   const storeCustomisationType = (type: string) => {
@@ -57,8 +57,8 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     storeElementType,
     tab,
     switchTab,
-    currentTshirt,
-    storeCurrentTshirt,
+    currentDesignPosition,
+    storeCurrentDesignPosition,
     customisationType,
     storeCustomisationType,
   };
