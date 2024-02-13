@@ -1,29 +1,26 @@
 import { fabricContext } from "@/store/context";
-import { Image } from "@chakra-ui/react";
 import { fabric } from "fabric";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-const RightPocket: React.FC = () => {
+interface CanvasPositionProps {
+  position: string;
+  height: number;
+  width: number;
+}
+
+const CanvasPosition: React.FC<CanvasPositionProps> = ({
+  position,
+  height,
+  width,
+}) => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const [canvasMeasurements, setCanvasMeasurements] = useState<{
-    width: number;
-    height: number;
-    top: number;
-    left: number;
-  }>({
-    height: 200,
-    width: 200,
-    top: 0,
-    left: 0,
-  });
 
-  const { storeCanvas, switchTab, currentDesignPosition } =
-    useContext(fabricContext);
+  const { storeCanvas, switchTab } = useContext(fabricContext);
 
   useEffect(() => {
     const initCanvas = new fabric.Canvas("canvas", {
-      height: 100,
-      width: 100,
+      height,
+      width,
     });
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = "#2BEBC8";
@@ -109,15 +106,16 @@ const RightPocket: React.FC = () => {
     return () => {
       initCanvas.dispose();
     };
-  }, []);
+  }, [position]);
 
   return (
-    <>
+    <div className="absolute z-10">
       <canvas
         id="canvas"
-        className={`border-dashed border-2 border-red-500 h-full top-0`}
+        className="border-dashed border-2 border-red-500"
       ></canvas>
-    </>
+    </div>
   );
 };
-export default RightPocket;
+
+export default CanvasPosition;

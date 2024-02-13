@@ -39,8 +39,20 @@ const designPositions: Array<designPositionOptions> = [
 ];
 
 const DesignPosition: React.FC = () => {
-  const { storeCurrentDesignPosition, currentDesignPosition } =
-    useContext(fabricContext);
+  const {
+    storeCurrentDesignPosition,
+    currentDesignPosition,
+    storeCurrentTshirt,
+  } = useContext(fabricContext);
+
+  const handleDesignPositionSelection = (position: string) => {
+    storeCurrentDesignPosition(position);
+    if (position.includes("Back")) {
+      storeCurrentTshirt("/assets/tshirt-back.png");
+    } else {
+      storeCurrentTshirt("/assets/tshirt.png");
+    }
+  };
 
   return (
     <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3 w-11/12">
@@ -55,6 +67,7 @@ const DesignPosition: React.FC = () => {
                 ? "border-blue-500"
                 : "border-gray-400"
             }`}
+            onClick={() => handleDesignPositionSelection(asset.position)}
             key={asset.position}
           >
             <p
@@ -67,7 +80,6 @@ const DesignPosition: React.FC = () => {
               {asset.position}
             </p>
             <Image
-              onClick={() => storeCurrentDesignPosition(asset.position)}
               cursor={"pointer"}
               src={asset.image}
               alt="image"
