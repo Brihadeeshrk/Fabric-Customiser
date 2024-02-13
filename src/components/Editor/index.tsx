@@ -16,7 +16,7 @@ const Editor: React.FC<EditorProps> = () => {
 
   return (
     <div className="flex">
-      <div className="w-1/4 p-3">
+      <div className="w-1/4 p-3 h-auto">
         <Menu />
       </div>
 
