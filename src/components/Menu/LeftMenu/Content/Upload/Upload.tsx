@@ -155,7 +155,7 @@ const Upload: React.FC = () => {
                   onChange={handleFilterChange}
                   value={activeFilters}
                 >
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
                     {radioOptions.map((option, index) => (
                       <div key={index} className="flex items-center space-x-2">
                         <Checkbox value={option} id={`r${index}`} />

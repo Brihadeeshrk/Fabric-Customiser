@@ -1,11 +1,6 @@
 import React from "react";
-import Products from "./Products/Products";
-import Assets from "./Assets/Assets";
-import Upload from "./Upload/Upload";
-import Qrcode from "./Qrcode/Qrcode";
-import Draw from "./Draw/Draw";
 import TextTab from "./Text/TextTab";
-import Wordcloud from "./Wordcloud/Wordcloud";
+import Upload from "./Upload/Upload";
 
 interface ContentProps {
   currentTab: string;
@@ -19,13 +14,8 @@ const Content: React.FC<ContentProps> = ({ currentTab }) => {
       </p>
 
       <div>
-        {currentTab === "Products" && <Products />}
-        {currentTab === "Assets" && <Assets />}
         {currentTab === "Upload Image" && <Upload />}
-        {currentTab === "QRCode" && <Qrcode />}
-        {currentTab === "Draw" && <Draw />}
         {currentTab === "Insert Text" && <TextTab />}
-        {currentTab === "Word Cloud" && <Wordcloud />}
       </div>
     </div>
   );

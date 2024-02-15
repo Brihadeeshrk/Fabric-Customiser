@@ -1,13 +1,7 @@
-import { Icon, Text } from "@chakra-ui/react";
-import React from "react";
-import {
-  AiOutlineShoppingCart,
-  AiTwotoneCamera,
-  AiOutlineCloudUpload,
-  AiFillCloud,
-  AiOutlineQrcode,
-} from "react-icons/ai";
+import { Icon } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import React from "react";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import { RxText } from "react-icons/rx";
 
 interface TabsProps {
@@ -22,34 +16,14 @@ export interface Tab {
 }
 
 const TabOptions: Array<Tab> = [
-  // {
-  //   title: "Products",
-  //   icon: AiOutlineShoppingCart,
-  // },
-  // {
-  //   title: "Assets",
-  //   icon: AiTwotoneCamera,
-  // },
   {
     title: "Upload Image",
     icon: AiOutlineCloudUpload,
   },
-  // {
-  //   title: "QRCode",
-  //   icon: AiOutlineQrcode,
-  // },
-  // {
-  //   title: "Draw",
-  //   icon: PiPencilSimpleDuotone,
-  // },
   {
     title: "Insert Text",
     icon: RxText,
   },
-  // {
-  //   title: "Word Cloud",
-  //   icon: AiFillCloud,
-  // },
 ];
 
 const Tabs: React.FC<TabsProps> = ({ chooseTab, currentTab }) => {

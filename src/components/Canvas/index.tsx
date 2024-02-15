@@ -5,10 +5,6 @@ import CanvasPosition from "./CanvasPosition";
 
 const FabricCanvas: React.FC = () => {
   const { currentDesignPosition, currentTshirt } = useContext(fabricContext);
-  const [canvasSize, setCanvasSize] = useState<{
-    width: number;
-    height: number;
-  }>({ width: 100, height: 100 });
   const [canvasPosition, setCanvasPosition] = useState<{
     top: number;
     left: number;
@@ -17,13 +13,13 @@ const FabricCanvas: React.FC = () => {
   const positionMapping: {
     [key: string]: { width: number; height: number; top: number; left: number };
   } = {
-    "Front Left Chest": { width: 50, height: 50, top: 25, left: 51 },
-    "Front Right Chest": { width: 50, height: 50, top: 25, left: 46 },
-    "Front Center": { width: 125, height: 150, top: 22, left: 46 },
-    "Left Sleeve": { width: 70, height: 40, top: 74, left: 48 },
-    "Right Sleeve": { width: 70, height: 40, top: 74, left: 47.5 },
+    "Front Left Chest": { width: 75, height: 75, top: 30, left: 52 },
+    "Front Right Chest": { width: 75, height: 75, top: 30, left: 43 },
+    "Front Center": { width: 200, height: 300, top: 25, left: 44 },
+    "Left Sleeve": { width: 100, height: 50, top: 77, left: 47 },
+    "Right Sleeve": { width: 100, height: 50, top: 77, left: 46.5 },
     "Back Neck": { width: 80, height: 30, top: 10, left: 47.5 },
-    "Back Center": { width: 125, height: 150, top: 22, left: 46 },
+    "Back Center": { width: 200, height: 300, top: 20, left: 43.5 },
   };
 
   useEffect(() => {
@@ -31,10 +27,6 @@ const FabricCanvas: React.FC = () => {
       const positionConfig = positionMapping[currentDesignPosition];
 
       if (positionConfig) {
-        setCanvasSize({
-          width: positionConfig.width,
-          height: positionConfig.height,
-        });
         setCanvasPosition({
           top: positionConfig.top,
           left: positionConfig.left,
@@ -54,7 +46,7 @@ const FabricCanvas: React.FC = () => {
         />
       </div>
       <div
-        className="absolute "
+        className={`absolute`}
         style={{
           top: `${canvasPosition.top}%`,
           left: `${canvasPosition.left}%`,

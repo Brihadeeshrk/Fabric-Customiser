@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useFabricOps from "@/hooks/fabricOps";
 import { fabricContext } from "@/store/context";
-import { Select, Input } from "@chakra-ui/react";
+import { Select, Input, Button } from "@chakra-ui/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import {
@@ -204,6 +203,7 @@ const TextTab: React.FC<TextTabProps> = () => {
           value={textValue}
           onChange={onChangeHandler}
           type="text"
+          width={{ base: "200px", xl: "300px" }}
           placeholder="Enter text"
         />
       </div>
@@ -217,6 +217,7 @@ const TextTab: React.FC<TextTabProps> = () => {
             <Select
               value={selectedFontFamily}
               onChange={handleFontFamilyChange}
+              width={{ base: "200px", xl: "300px" }}
             >
               {fonts.map((font) => (
                 <option key={font} value={font}>
@@ -257,20 +258,26 @@ const TextTab: React.FC<TextTabProps> = () => {
             onFontSizeChange={handleFontSizeChange}
           />
 
-          <div className="flex align-center justify-center w-1/2">
-            <Input
-              type="text"
-              value={color.toUpperCase()}
-              onChange={handleHexInputChange}
-              className="border-b border-b-black bg-transparent p-1 w-full outline-none mr-4"
-              placeholder="#FFFFFF"
-            />
-            <div
-              className={`w-9 h-9 cursor-pointer border border-black rounded-sm `}
-              style={{ backgroundColor: color }}
-              onClick={toggleColorPicker}
-              title="Click to change color"
-            />
+          <div className="flex-col align-center">
+            <p className="text-sm md:text-lg text-gray-600">
+              Choose font color
+            </p>
+            <div className="flex align-center">
+              <Input
+                type="text"
+                width={"100px"}
+                value={color.toUpperCase()}
+                onChange={handleHexInputChange}
+                className="border-b border-b-black bg-transparent p-1 w-full outline-none mr-4"
+                placeholder="#FFFFFF"
+              />
+              <div
+                className={`w-12 h-9 cursor-pointer border border-black rounded-sm `}
+                style={{ backgroundColor: color }}
+                onClick={toggleColorPicker}
+                title="Click to change color"
+              />
+            </div>
           </div>
 
           {isPickerVisible && (
@@ -278,7 +285,7 @@ const TextTab: React.FC<TextTabProps> = () => {
               <HexColorPicker color={color} onChange={handleColorChange} />
             </div>
           )}
-          <div className="flex items-center">
+          <div className="flex-col items-center">
             <p className="mr-3 text-sm md:text-lg text-gray-600">
               Transparency:
             </p>
@@ -295,7 +302,12 @@ const TextTab: React.FC<TextTabProps> = () => {
       )}
 
       <div className="flex space-x-5">
-        <Button onClick={handleButtonClick}>
+        <Button
+          bg="black"
+          color={"white"}
+          size={{ base: "md", xl: "lg" }}
+          onClick={handleButtonClick}
+        >
           {isUpdateMode ? "Update" : "Add Text"}
         </Button>
 
