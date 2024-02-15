@@ -68,25 +68,34 @@ const Upload: React.FC = () => {
   };
 
   const handleWidthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const width = parseInt(event.target.value);
-    if (!isNaN(width)) {
-      setImageWidth(width);
-      const activeObject = canvas?.getActiveObject() as fabric.Image;
-      if (activeObject) {
-        activeObject.set("width", width);
-        canvas?.requestRenderAll();
+    const newWidth = parseInt(event.target.value, 10);
+    if (!isNaN(newWidth) && canvas) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject?.type === "image") {
+        const image = activeObject as fabric.Image;
+        if (image.width) {
+          const scaleX = newWidth / image.width;
+          image.scaleX = scaleX;
+          canvas.requestRenderAll();
+          setImageWidth(newWidth);
+        }
       }
     }
   };
 
   const handleHeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const height = parseInt(event.target.value);
-    if (!isNaN(height)) {
-      setImageHeight(height);
-      const activeObject = canvas?.getActiveObject() as fabric.Image;
-      if (activeObject) {
-        activeObject.set("height", height);
-        canvas?.requestRenderAll();
+    const newHeight = parseInt(event.target.value, 10);
+    if (!isNaN(newHeight) && canvas) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject?.type === "image") {
+        // Assuming activeObject is an image, thus it has height.
+        const image = activeObject as fabric.Image;
+        if (image.height) {
+          const scaleY = newHeight / image.height;
+          image.scaleY = scaleY;
+          canvas.requestRenderAll();
+          setImageHeight(newHeight);
+        }
       }
     }
   };
@@ -123,7 +132,7 @@ const Upload: React.FC = () => {
                   <p className="text-sm text-gray-700">Width</p>
                   <Input
                     type="number"
-                    value={imageWidth || 0}
+                    value={imageWidth || ""}
                     onChange={handleWidthChange}
                     placeholder="Width"
                   />
@@ -132,7 +141,7 @@ const Upload: React.FC = () => {
                   <p className="text-sm text-gray-700">Height</p>
                   <Input
                     type="number"
-                    value={imageHeight || 0}
+                    value={imageHeight || ""}
                     onChange={handleHeightChange}
                     placeholder="Height"
                   />
