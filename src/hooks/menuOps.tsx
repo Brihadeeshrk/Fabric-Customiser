@@ -1,15 +1,34 @@
 import { useContext } from "react";
 import { fabricContext } from "@/store/context";
 import { fabric } from "fabric";
-import useCanvasUndoRedo from "./CanvasUndoRedo";
 
 interface ExtendedCanvas extends fabric.Canvas {
   clipboard?: fabric.Object[];
 }
 
 const useMenuOps = () => {
-  const { canvas, currentTshirt } = useContext(fabricContext);
-  const { saveCanvasState, undo, redo } = useCanvasUndoRedo();
+  const { canvas, storeCustomisationType } = useContext(fabricContext);
+
+  const saveCanvasState = (canvas: fabric.Canvas, position: string) => {
+    const canvasStates = JSON.parse(localStorage.getItem("canvas") || "{}");
+    const state = JSON.stringify({
+      canvas: canvas.toJSON(),
+    });
+    canvasStates[position] = state;
+    localStorage.setItem("canvas", JSON.stringify(canvasStates));
+  };
+
+  const loadCanvasState = (canvas: fabric.Canvas, position: string) => {
+    const canvasStates = JSON.parse(localStorage.getItem("canvas") || "{}");
+    const savedState = canvasStates[position];
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      if (parsedState.customisationType) {
+        storeCustomisationType(parsedState.customisationType);
+      }
+      canvas.loadFromJSON(parsedState.canvas, canvas.renderAll.bind(canvas));
+    }
+  };
 
   const copyObject = () => {
     if (canvas) {
@@ -34,7 +53,6 @@ const useMenuOps = () => {
         canvas?.discardActiveObject();
         canvas?.renderAll();
       }
-      saveCanvasState(canvas);
     }
   };
 
@@ -53,7 +71,6 @@ const useMenuOps = () => {
           canvas?.requestRenderAll();
         }
       }
-      saveCanvasState(canvas);
     }
   };
 
@@ -72,7 +89,6 @@ const useMenuOps = () => {
           canvas?.requestRenderAll();
         }
       }
-      saveCanvasState(canvas);
     }
   };
 
@@ -120,7 +136,6 @@ const useMenuOps = () => {
 
   const emptyCanvas = () => {
     canvas?.clear();
-    if (canvas) saveCanvasState(canvas);
   };
 
   const save = (canvas: fabric.Canvas) => {
@@ -199,6 +214,8 @@ const useMenuOps = () => {
     save,
     print,
     downloadAsPNG,
+    saveCanvasState,
+    loadCanvasState,
   };
 };
 

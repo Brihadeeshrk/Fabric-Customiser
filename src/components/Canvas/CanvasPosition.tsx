@@ -1,4 +1,6 @@
+import useMenuOps from "@/hooks/menuOps";
 import { fabricContext } from "@/store/context";
+
 import { fabric } from "fabric";
 import { useContext, useEffect, useState } from "react";
 
@@ -16,6 +18,7 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
 
   const { storeCanvas, switchTab } = useContext(fabricContext);
+  const { saveCanvasState, loadCanvasState } = useMenuOps();
 
   useEffect(() => {
     const initCanvas = () => {
@@ -123,17 +126,6 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
     };
   }, [position]);
 
-  const saveCanvasState = (canvas: fabric.Canvas, position: string) => {
-    const state = JSON.stringify(canvas.toJSON());
-    localStorage.setItem(`canvasState_${position}`, state);
-  };
-
-  const loadCanvasState = (canvas: fabric.Canvas, position: string) => {
-    const savedState = localStorage.getItem(`canvasState_${position}`);
-    if (savedState) {
-      canvas.loadFromJSON(savedState, canvas.renderAll.bind(canvas));
-    }
-  };
   return (
     <div className="absolute z-10">
       <canvas

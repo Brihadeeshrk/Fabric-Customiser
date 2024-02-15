@@ -1,24 +1,9 @@
 import { fabricContext } from "@/store/context";
 import { fabric } from "fabric";
 import { useContext } from "react";
-import useCanvasUndoRedo from "./CanvasUndoRedo";
 
 const useFabricOps = () => {
   const { canvas } = useContext(fabricContext);
-  const { saveCanvasState, undo, redo } = useCanvasUndoRedo();
-
-  const addRect = (canvas?: fabric.Canvas) => {
-    const rect = new fabric.Rect({
-      height: 280,
-      width: 200,
-      stroke: "#2BEBC8",
-    });
-    canvas?.add(rect);
-    canvas?.requestRenderAll();
-    if (canvas) {
-      saveCanvasState(canvas);
-    }
-  };
 
   const addText = (text: string, color: string) => {
     const obj = new fabric.Text(text, {
@@ -30,9 +15,6 @@ const useFabricOps = () => {
     canvas?.add(obj);
     canvas?.requestRenderAll();
     obj.set("fill", `${color}`);
-    if (canvas) {
-      saveCanvasState(canvas);
-    }
   };
 
   const addImage = (file: File) => {
@@ -52,34 +34,22 @@ const useFabricOps = () => {
       );
     };
     reader.readAsDataURL(file);
-    if (canvas) {
-      saveCanvasState(canvas);
-    }
   };
 
   const updateText = (textObject: fabric.Text, newText: string) => {
     textObject.set("text", newText);
     canvas?.renderAll();
-    if (canvas) {
-      saveCanvasState(canvas);
-    }
   };
 
   const updateColor = (textObject: fabric.Text, color: string) => {
     textObject.set("fill", `${color}`);
-    if (canvas) {
-      saveCanvasState(canvas);
-    }
   };
 
   return {
-    addRect,
     addText,
     addImage,
     updateText,
     updateColor,
-    undo,
-    redo,
   };
 };
 export default useFabricOps;
