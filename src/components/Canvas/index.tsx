@@ -44,9 +44,14 @@ const FabricCanvas: React.FC = () => {
   }, [currentDesignPosition]);
 
   return (
-    <div className="relative h-full flex">
+    <div className="relative flex">
       <div className="flex items-center justify-center w-full">
-        <Image src={currentTshirt} height={500} width={500} alt="Tshirt" />
+        <Image
+          src={currentTshirt}
+          height={{ base: 250, xl: 500 }}
+          width={{ base: 250, xl: 500 }}
+          alt="Tshirt"
+        />
       </div>
       <div
         className="absolute "

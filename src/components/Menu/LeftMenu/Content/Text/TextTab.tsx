@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useFabricOps from "@/hooks/fabricOps";
 import { fabricContext } from "@/store/context";
-import { Select } from "@chakra-ui/react";
+import { Select, Input } from "@chakra-ui/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import {
@@ -195,7 +194,7 @@ const TextTab: React.FC<TextTabProps> = () => {
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm md:text-lg text-gray-600">
           {selectedObject && isUpdateMode
             ? "Update text."
             : "Enter text below."}
@@ -212,7 +211,9 @@ const TextTab: React.FC<TextTabProps> = () => {
       {selectedObject && selectedObject.type === "text" && (
         <div className="space-y-4">
           <div>
-            <p className="text-sm text-gray-600">Choose font family</p>
+            <p className="text-sm md:text-lg text-gray-600">
+              Choose font family
+            </p>
             <Select
               value={selectedFontFamily}
               onChange={handleFontFamilyChange}
@@ -273,12 +274,14 @@ const TextTab: React.FC<TextTabProps> = () => {
           </div>
 
           {isPickerVisible && (
-            <div>
+            <div className="mt-2">
               <HexColorPicker color={color} onChange={handleColorChange} />
             </div>
           )}
           <div className="flex items-center">
-            <p className="mr-3 text-sm text-gray-600">Transparency:</p>
+            <p className="mr-3 text-sm md:text-lg text-gray-600">
+              Transparency:
+            </p>
             <input
               type="range"
               min="0"

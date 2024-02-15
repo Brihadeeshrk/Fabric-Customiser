@@ -69,7 +69,7 @@ const DesignPosition: React.FC = () => {
       <div className="flex-col items-center justify-center space-y-3">
         {designPositions.map((asset) => (
           <div
-            className={`flex items-center p-2 rounded-md ${
+            className={`flex items-center xl:p-2 rounded-md ${
               currentDesignPosition === asset.position
                 ? "border-4 border-blue-500"
                 : "border-2 border-gray-400"
@@ -81,12 +81,11 @@ const DesignPosition: React.FC = () => {
               cursor={"pointer"}
               src={asset.image}
               alt="image"
-              mr={5}
-              width={100}
+              width={{ base: 75, xl: 100 }}
               p={3}
             />
             <p
-              className={`transition-all text-center text-md text-gray-700 ${
+              className={`transition-all text-left text-sm xl:text-xl text-gray-700 ${
                 currentDesignPosition === asset.position
                   ? "text-blue-500 font-bold"
                   : ""

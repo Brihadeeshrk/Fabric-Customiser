@@ -11,9 +11,9 @@ const Menu: React.FC<MenuProps> = () => {
 
   return (
     <>
-      <div className="bg-white h-full rounded-md p-3 shadow-lg flex">
+      <div className="bg-white h-full rounded-md shadow-lg flex">
         <AnimatePresence>
-          <div className="p-3 bg-gray-200 rounded-md">
+          <div className="p-3 w-[25% md:w-[15%]] bg-gray-200 rounded-md">
             <Tabs chooseTab={switchTab} currentTab={tab} />
           </div>
         </AnimatePresence>

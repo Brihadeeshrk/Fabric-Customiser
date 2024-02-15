@@ -59,14 +59,13 @@ const Tabs: React.FC<TabsProps> = ({ chooseTab, currentTab }) => {
     <div className="space-y-8">
       {TabOptions.map((tab) => (
         <div
-          className="flex items-center relative"
+          className="flex-col md:flex justify-center items-center relative"
           key={tab.title}
           onClick={() => chooseTab(tab.title)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           <div
-            className="ml-2 mr-4"
             style={{
               transition: "background-color 0.2s",
             }}
@@ -84,13 +83,13 @@ const Tabs: React.FC<TabsProps> = ({ chooseTab, currentTab }) => {
             transition={{ duration: 0.2 }}
             className="label"
           >
-            <Text
-              fontWeight={600}
-              color={currentTab === tab.title ? "blue.500" : "gray.500"}
-              cursor={"pointer"}
+            <p
+              className={`font-semibold text-sm md:text-md text-center cursor-pointer ${
+                currentTab === tab.title ? "text-blue-500" : "text-gray-500"
+              }`}
             >
               {tab.title}
-            </Text>
+            </p>
           </motion.div>
         </div>
       ))}

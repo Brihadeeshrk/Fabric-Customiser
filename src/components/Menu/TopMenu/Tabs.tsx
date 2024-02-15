@@ -68,40 +68,49 @@ const Tabs: React.FC = () => {
       onClick: () => {},
     },
   ];
+
   return (
     <div className="flex space-x-8">
       <div className="space-x-5 flex">
-        {TabOptions.map((tab) => (
-          <Button
-            key={tab.title}
-            onClick={tab.onClick}
-            border={"1px"}
-            borderColor={"gray.300"}
-            p={3}
-            bg={"white"}
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
-          >
-            <Icon fontSize={25} as={tab.icon} mr={3} />
-            <p className="text-sm">{tab.title}</p>
-          </Button>
-        ))}
-
-        <div className="space-x-5 flex">
-          {OperationButtons.map((tab) => (
+        <div className="grid grid-cols-3 gap-2">
+          {TabOptions.map((tab) => (
             <Button
+              key={tab.title}
               onClick={tab.onClick}
               border={"1px"}
               borderColor={"gray.300"}
-              p={3}
-              key={tab.title}
+              p={{ base: 5, xl: 8 }}
+              bg={"white"}
               display={"flex"}
+              flexDirection={"column"}
               alignItems={"center"}
               justifyContent={"center"}
+              mb={2}
             >
-              <Icon fontSize={25} as={tab.icon} mr={3} />
-              <p className="text-sm">{tab.title}</p>
+              <Icon fontSize={{ base: 18, xl: 25 }} as={tab.icon} />
+              <p className="text-xs xl:text-xl">{tab.title}</p>
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-x-5 flex">
+        <div className="grid grid-cols-2 gap-2">
+          {OperationButtons.map((tab) => (
+            <Button
+              key={tab.title}
+              onClick={tab.onClick}
+              border={"1px"}
+              borderColor={"gray.300"}
+              p={{ base: 5, xl: 8 }}
+              display={"flex"}
+              flexDirection={"column"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              mb={2}
+            >
+              <Icon fontSize={{ base: 18, xl: 25 }} as={tab.icon} />
+              <p className="text-xs xl:text-xl">{tab.title}</p>
             </Button>
           ))}
         </div>
@@ -109,4 +118,5 @@ const Tabs: React.FC = () => {
     </div>
   );
 };
+
 export default Tabs;

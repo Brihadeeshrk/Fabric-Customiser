@@ -40,7 +40,9 @@ const Customisation: React.FC = () => {
 
   return (
     <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3">
-      <p className="text-sm font-bold text-gray-600">Type of Customisation</p>
+      <p className="text-sm font-bold text-gray-600">
+        Choose a Customisation type
+      </p>
       <div className="flex w-1/2 space-x-3">
         {buttons.map((button) => (
           <Button
@@ -51,8 +53,8 @@ const Customisation: React.FC = () => {
             onClick={() => handleButtonClick(button.text)}
             _hover={{ opacity: 0.7 }}
           >
-            <Icon as={button.icon} fontSize={25} mr={3} />
-            {button.text}
+            <Icon as={button.icon} fontSize={{ base: 20, xl: 25 }} mr={3} />
+            <p className="text-sm xl:text-xl">{button.text}</p>
           </Button>
         ))}
       </div>

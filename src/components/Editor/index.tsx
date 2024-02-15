@@ -16,28 +16,30 @@ const Editor: React.FC<EditorProps> = () => {
 
   return (
     <div className="flex">
-      <div className="w-1/4 p-3 h-auto">
+      <div className="p-3 w-3/5 xl:w-1/5 min-w-[200px]">
         <Menu />
       </div>
 
-      <div className="flex flex-col w-3/4 p-3 space-y-5">
+      <div className="flex flex-col flex-grow p-3 space-y-5">
         <Customisation />
 
         {customisationType && (
           <>
             <TopMenu />
+
             <div className="flex space-x-5 mt-5">
-              <div className="p-5 w-[60%] bg-fabric-container">
+              <div className="p-5 w-3/5 bg-fabric-container">
                 <FabricCanvas />
               </div>
-              <div className=" w-[40%] ">
+
+              <div className="w-2/5">
                 <DesignPosition />
               </div>
             </div>
 
             <Notes />
 
-            <div className="w-11/12 flex justify-end">
+            <div className="w-full flex justify-end">
               <Button
                 p={3}
                 bg={"#F6BE00"}
@@ -56,4 +58,5 @@ const Editor: React.FC<EditorProps> = () => {
     </div>
   );
 };
+
 export default Editor;

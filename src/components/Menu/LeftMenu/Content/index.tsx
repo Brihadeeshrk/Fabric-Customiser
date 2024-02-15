@@ -13,7 +13,7 @@ interface ContentProps {
 
 const Content: React.FC<ContentProps> = ({ currentTab }) => {
   return (
-    <div className="w-full flex-col items-center justify-center space-y-7">
+    <div className="flex-col items-center justify-center space-y-7 overflow-auto">
       <p className="text-xl text-gray-700 font-semibold text-center">
         {currentTab}
       </p>
