@@ -18,10 +18,27 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
   const { storeCanvas, switchTab } = useContext(fabricContext);
 
   useEffect(() => {
-    const initCanvas = new fabric.Canvas("canvas", {
-      height,
-      width,
-    });
+      const initCanvas = () => {
+      const c = new fabric.Canvas("canvas", {
+        height,
+        width,
+      });
+      setCanvas(c);
+      storeCanvas(c);
+
+      loadCanvasState(c , position);
+
+      // Setup canvas event listeners for save state
+      c.on("object:added", () => saveCanvasState(c,position));
+      c.on("object:modified", () => saveCanvasState(c,position));
+      c.on("object:removed", () => saveCanvasState(c,position));
+       c.on("mouse:down", onSelectionChange);
+    c.on("selection:created", onSelectionChange);
+    c.on("selection:updated", onSelectionChange);
+    c.on("selection:cleared", onSelectionChange);
+    };
+    
+initCanvas();
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = "#2BEBC8";
     fabric.Object.prototype.cornerStyle = "rect";
@@ -68,14 +85,8 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
         },
       });
     };
-    setCanvas(initCanvas);
-    storeCanvas(initCanvas);
 
-    initCanvas.on("mouse:down", onSelectionChange);
-    initCanvas.on("selection:created", onSelectionChange);
-    initCanvas.on("selection:updated", onSelectionChange);
-    initCanvas.on("selection:cleared", onSelectionChange);
-
+   
     function onSelectionChange(event: fabric.IEvent) {
       const activeObject = event.target;
 
@@ -94,7 +105,7 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
       }
     }
 
-    initCanvas.on("object:modified", (event: any) => {
+    canvas?.on("object:modified", (event: any) => {
       const modifiedObject = event.target;
       if (modifiedObject instanceof fabric.Text) {
         console.log(
@@ -104,10 +115,25 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
     });
 
     return () => {
-      initCanvas.dispose();
-    };
-  }, [position]);
+    try {
+      canvas?.dispose();
+    } catch (error) {
+      console.error("Error disposing canvas:", error);
+    }
+  };
+  }, [position, ]);
 
+  const saveCanvasState = (canvas: fabric.Canvas, position: string) => {
+    const state = JSON.stringify(canvas.toJSON());
+    localStorage.setItem(`canvasState_${position}`, state);
+  };
+
+  const loadCanvasState = (canvas: fabric.Canvas, position: string) => {
+    const savedState = localStorage.getItem(`canvasState_${position}`);
+    if (savedState) {
+      canvas.loadFromJSON(savedState, canvas.renderAll.bind(canvas));
+    }
+  };
   return (
     <div className="absolute z-10">
       <canvas
