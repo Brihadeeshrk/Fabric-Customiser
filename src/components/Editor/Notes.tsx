@@ -3,7 +3,7 @@ import React from "react";
 
 const Notes: React.FC = () => {
   return (
-    <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3 w-11/12">
+    <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3">
       <p className="text-sm font-bold text-gray-600">
         Notes/ need help removing the background? let us know!
       </p>

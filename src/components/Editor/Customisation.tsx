@@ -39,7 +39,7 @@ const Customisation: React.FC = () => {
   };
 
   return (
-    <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3 w-11/12">
+    <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3">
       <p className="text-sm font-bold text-gray-600">Type of Customisation</p>
       <div className="flex w-1/2 space-x-3">
         {buttons.map((button) => (

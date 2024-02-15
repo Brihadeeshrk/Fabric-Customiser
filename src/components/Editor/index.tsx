@@ -27,12 +27,14 @@ const Editor: React.FC<EditorProps> = () => {
           <>
             <TopMenu />
             <div className="flex space-x-5 mt-5">
-              <div className="p-5 w-11/12 bg-fabric-container">
+              <div className="p-5 w-[60%] bg-fabric-container">
                 <FabricCanvas />
+              </div>
+              <div className=" w-[40%] ">
+                <DesignPosition />
               </div>
             </div>
 
-            <DesignPosition />
             <Notes />
 
             <div className="w-11/12 flex justify-end">

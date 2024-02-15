@@ -46,7 +46,7 @@ const FabricCanvas: React.FC = () => {
   return (
     <div className="relative h-full flex">
       <div className="flex items-center justify-center w-full">
-        <Image src={currentTshirt} height={300} width={300} alt="Tshirt" />
+        <Image src={currentTshirt} height={500} width={500} alt="Tshirt" />
       </div>
       <div
         className="absolute "
