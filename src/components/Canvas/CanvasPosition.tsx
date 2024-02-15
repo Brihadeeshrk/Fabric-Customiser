@@ -18,7 +18,7 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
   const { storeCanvas, switchTab } = useContext(fabricContext);
 
   useEffect(() => {
-      const initCanvas = () => {
+    const initCanvas = () => {
       const c = new fabric.Canvas("canvas", {
         height,
         width,
@@ -26,19 +26,20 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
       setCanvas(c);
       storeCanvas(c);
 
-      loadCanvasState(c , position);
+      loadCanvasState(c, position);
 
-      // Setup canvas event listeners for save state
-      c.on("object:added", () => saveCanvasState(c,position));
-      c.on("object:modified", () => saveCanvasState(c,position));
-      c.on("object:removed", () => saveCanvasState(c,position));
-       c.on("mouse:down", onSelectionChange);
-    c.on("selection:created", onSelectionChange);
-    c.on("selection:updated", onSelectionChange);
-    c.on("selection:cleared", onSelectionChange);
+      c.on("object:added", () => saveCanvasState(c, position));
+      c.on("object:modified", () => saveCanvasState(c, position));
+      c.on("object:removed", () => saveCanvasState(c, position));
+      c.on("mouse:down", onSelectionChange);
+      c.on("selection:created", onSelectionChange);
+      c.on("selection:updated", onSelectionChange);
+      c.on("selection:cleared", onSelectionChange);
+
+      return c;
     };
-    
-initCanvas();
+
+    const c = initCanvas();
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = "#2BEBC8";
     fabric.Object.prototype.cornerStyle = "rect";
@@ -86,7 +87,6 @@ initCanvas();
       });
     };
 
-   
     function onSelectionChange(event: fabric.IEvent) {
       const activeObject = event.target;
 
@@ -115,13 +115,13 @@ initCanvas();
     });
 
     return () => {
-    try {
-      canvas?.dispose();
-    } catch (error) {
-      console.error("Error disposing canvas:", error);
-    }
-  };
-  }, [position, ]);
+      try {
+        c?.dispose();
+      } catch (error) {
+        console.error("Error disposing canvas:", error);
+      }
+    };
+  }, [position]);
 
   const saveCanvasState = (canvas: fabric.Canvas, position: string) => {
     const state = JSON.stringify(canvas.toJSON());

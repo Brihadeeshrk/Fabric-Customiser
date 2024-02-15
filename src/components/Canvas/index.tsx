@@ -29,7 +29,7 @@ const FabricCanvas: React.FC = () => {
   useEffect(() => {
     if (currentDesignPosition) {
       const positionConfig = positionMapping[currentDesignPosition];
-      console.log(positionConfig);
+
       if (positionConfig) {
         setCanvasSize({
           width: positionConfig.width,

@@ -86,35 +86,35 @@ const useMenuOps = () => {
 
   const lockLayer = () => {
     if (canvas) {
-       const activeObject = canvas.getActiveObject();
-    if (activeObject) {
-      activeObject.set({
-        lockMovementX: true,
-        lockMovementY: true,
-        lockRotation: true,
-        lockScalingX: true,
-        lockScalingY: true,
-        hasControls: false,
-      });
-      canvas.requestRenderAll(); 
-    }
+      const activeObject = canvas.getActiveObject();
+      if (activeObject) {
+        activeObject.set({
+          lockMovementX: true,
+          lockMovementY: true,
+          lockRotation: true,
+          lockScalingX: true,
+          lockScalingY: true,
+          hasControls: false,
+        });
+        canvas.requestRenderAll();
+      }
     }
   };
 
   const unlockLayer = () => {
     if (canvas) {
-       const activeObject = canvas.getActiveObject();
-    if (activeObject) {
-      activeObject.set({
-        lockMovementX: false,
-        lockMovementY: false,
-        lockRotation: false,
-        lockScalingX: false,
-        lockScalingY: false,
-        hasControls: true, 
-      });
-      canvas.requestRenderAll();
-    }
+      const activeObject = canvas.getActiveObject();
+      if (activeObject) {
+        activeObject.set({
+          lockMovementX: false,
+          lockMovementY: false,
+          lockRotation: false,
+          lockScalingX: false,
+          lockScalingY: false,
+          hasControls: true,
+        });
+        canvas.requestRenderAll();
+      }
     }
   };
 
