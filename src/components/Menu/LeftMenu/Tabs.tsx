@@ -33,7 +33,7 @@ const Tabs: React.FC<TabsProps> = ({ chooseTab, currentTab }) => {
     <div className="space-y-8">
       {TabOptions.map((tab) => (
         <div
-          className="flex-col md:flex justify-center items-center relative"
+          className="flex md:flex justify-center items-center relative"
           key={tab.title}
           onClick={() => chooseTab(tab.title)}
           onMouseEnter={() => setIsHovered(true)}

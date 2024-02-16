@@ -1,4 +1,4 @@
-import { Button, Icon } from "@chakra-ui/react";
+import { Button, Flex, Icon } from "@chakra-ui/react";
 import React, { useContext, useEffect } from "react";
 import { MdPrint } from "react-icons/md";
 import { GiSewingNeedle } from "react-icons/gi";
@@ -15,12 +15,12 @@ const Customisation: React.FC = () => {
 
   const buttons: Array<buttonActions> = [
     {
-      icon: MdPrint,
-      text: "Print",
-    },
-    {
       icon: GiSewingNeedle,
       text: "Embroidery",
+    },
+    {
+      icon: MdPrint,
+      text: "Print",
     },
   ];
 
@@ -39,26 +39,31 @@ const Customisation: React.FC = () => {
   };
 
   return (
-    <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3">
-      <p className="text-sm font-bold text-gray-600">
-        Choose a Customisation type
-      </p>
-      <div className="flex w-1/2 space-x-3">
+    <Flex width="100%" className="bg-primary-blue rounded-md">
+      <Flex width="100%" className="space-x-2">
         {buttons.map((button) => (
           <Button
             key={button.text}
             display="flex"
-            bg={customisationType === button.text ? "#F6BE00" : "white"}
-            className="w-1/2"
+            bg={customisationType === button.text ? "white" : "transparent"}
+            color={customisationType === button.text ? "text.100" : "white"}
             onClick={() => handleButtonClick(button.text)}
-            _hover={{ opacity: 0.7 }}
+            _hover={{ opacity: 0.9 }}
+            p={7}
           >
-            <Icon as={button.icon} fontSize={{ base: 20, xl: 25 }} mr={3} />
-            <p className="text-sm xl:text-xl">{button.text}</p>
+            <Icon
+              as={button.icon}
+              fontSize={{ base: 20, xl: 25 }}
+              mr={3}
+              color={
+                customisationType === button.text ? "primary.100" : "white"
+              }
+            />
+            <p className="text-xs xl:text-xl">{button.text}</p>
           </Button>
         ))}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 };
 

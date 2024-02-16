@@ -22,6 +22,10 @@ const config = {
         "fabric-container": "url('../../public/assets/grid.webp')",
       },
       colors: {
+        "primary-blue": "#1100FF",
+        "off-white": "#F2F0FD",
+        "light-green": "#07C714",
+        "green-secondary": "#04914F",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

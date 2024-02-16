@@ -62,14 +62,14 @@ const DesignPosition: React.FC = () => {
   };
 
   return (
-    <div className="p-3 bg-gray-200 rounded-md flex-col space-y-3">
+    <div className="p-3 bg-gray-200 rounded-md flex space-y-3">
       <p className="text-sm font-bold text-gray-600">
         Select a design position
       </p>
-      <div className="flex-col items-center justify-center space-y-3">
+      <div className="flex items-center justify-between space-y-3">
         {designPositions.map((asset) => (
           <div
-            className={`flex-col items-center justify-center xl:p-2 rounded-md ${
+            className={`flex-col items-center justify-center xl:p-2 rounded-md w-[150px] h-[170px] m-2 ${
               currentDesignPosition === asset.position
                 ? "border-4 border-blue-500"
                 : "border-2 border-gray-400"
@@ -77,15 +77,6 @@ const DesignPosition: React.FC = () => {
             onClick={() => handleDesignPositionSelection(asset.position)}
             key={asset.position}
           >
-            <div className="items-center justify-center">
-              <Image
-                cursor={"pointer"}
-                src={asset.image}
-                alt="image"
-                width={{ base: 75, xl: 100 }}
-                p={3}
-              />
-            </div>
             <p
               className={`transition-all text-left text-sm xl:text-xl text-gray-700 ${
                 currentDesignPosition === asset.position
@@ -95,6 +86,15 @@ const DesignPosition: React.FC = () => {
             >
               {asset.position}
             </p>
+            <div className=" flex items-center justify-center">
+              <Image
+                cursor={"pointer"}
+                src={asset.image}
+                alt="image"
+                width={{ base: 75, xl: 100 }}
+                p={3}
+              />
+            </div>
           </div>
         ))}
       </div>

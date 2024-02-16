@@ -1,4 +1,4 @@
-import { Button, Icon } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { IoIosSave } from "react-icons/io";
 import FabricCanvas from "../Canvas";
@@ -15,27 +15,35 @@ const Editor: React.FC<EditorProps> = () => {
   const { customisationType } = useContext(fabricContext);
 
   return (
-    <div className="flex">
-      <div className="p-3 w-2/5 xl:w-1/5 min-w-[200px]">
-        <Menu />
-      </div>
-
-      <div className="flex flex-col flex-grow p-3 space-y-5">
+    <Flex width="100%">
+      <Flex
+        direction="column"
+        p={3}
+        width="15%"
+        maxWidth="400px"
+        className="space-y-5"
+      >
         <Customisation />
+        {/* <Menu /> */}
+      </Flex>
 
+      {/* <Flex
+        direction="column"
+        flexGrow={1}
+        p={3}
+        className="space-y-5"
+        width="80%"
+      >
         {customisationType && (
-          <>
+          <Box>
+            <DesignPosition />
             <TopMenu />
 
-            <div className="flex space-x-5 mt-5 h-[35%]">
-              <div className="p-5 w-[85%] bg-fabric-container">
+            <Flex mt={5} className="space-x-5 mt-5">
+              <Flex className="p-5 w-[85%] bg-fabric-container">
                 <FabricCanvas />
-              </div>
-
-              <div className="w-[15%] overflow-y-auto">
-                <DesignPosition />
-              </div>
-            </div>
+              </Flex>
+            </Flex>
 
             <Notes />
 
@@ -52,10 +60,10 @@ const Editor: React.FC<EditorProps> = () => {
                 <p className="text-sm">Save and Go to Cart</p>
               </Button>
             </div>
-          </>
+          </Box>
         )}
-      </div>
-    </div>
+      </Flex> */}
+    </Flex>
   );
 };
 
