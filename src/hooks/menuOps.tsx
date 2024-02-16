@@ -7,7 +7,12 @@ interface ExtendedCanvas extends fabric.Canvas {
 }
 
 const useMenuOps = () => {
-  const { canvas, storeCustomisationType } = useContext(fabricContext);
+  const {
+    canvas,
+    storeCustomisationType,
+    currentDesignPosition,
+    currentTshirt,
+  } = useContext(fabricContext);
 
   const saveCanvasState = (canvas: fabric.Canvas, position: string) => {
     const canvasStates = JSON.parse(localStorage.getItem("canvas") || "{}");
@@ -157,50 +162,77 @@ const useMenuOps = () => {
     window.print();
   };
 
-  const downloadAsPNG = (canvas: fabric.Canvas) => {
-    const dataURL = canvas.toDataURL({ format: "png" });
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = "canvas.png";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const positionMapping: {
+    [key: string]: {
+      width: number;
+      height: number;
+      top: number;
+      left: number;
+    };
+  } = {
+    "Front Left Chest": { width: 50, height: 50, top: 35, left: 70 },
+    "Front Right Chest": { width: 50, height: 50, top: 35, left: 40 },
+    "Front Center": { width: 125, height: 150, top: 55, left: 60 },
+    "Left Sleeve": { width: 70, height: 40, top: 85, left: 55 },
+    "Right Sleeve": { width: 70, height: 40, top: 85, left: 55 },
+    "Back Neck": { width: 80, height: 30, top: 10, left: 47.5 },
+    "Back Center": { width: 100, height: 150, top: 55, left: 50 },
   };
 
-  // const downloadAsPNG = async (
-  //   canvas: fabric.Canvas,
-  //   currentTshirt?: string
-  // ) => {
-  //   // Render the canvas with its elements
-  //   canvas.renderAll();
+  // This is working fine  for downloading single image but not for multiple images and few positioning issue
 
-  //   // Load the t-shirt image
-  //   fabric.Image.fromURL("./assets/tshirt.png", (tshirtImage) => {
-  //     // Set t-shirt image dimensions
-  //     tshirtImage.scaleToWidth(canvas.width || 100);
-  //     tshirtImage.scaleToHeight(canvas.height || 100);
+  const downloadAsPNG = () => {
+    if (!canvas || !currentTshirt || !positionMapping[currentDesignPosition])
+      return;
 
-  //     // Add the t-shirt image to the canvas
-  //     canvas.add(tshirtImage);
+    const { width, height, top, left } = positionMapping[currentDesignPosition];
+    const tShirtImageWidth = 250;
+    const tShirtImageHeight = 250;
 
-  //     // Render the canvas with the t-shirt image
-  //     canvas.renderAll();
+    const backgroundImage = new Image();
+    backgroundImage.src = currentTshirt;
+    backgroundImage.onload = () => {
+      const offScreenCanvas = document.createElement("canvas");
+      offScreenCanvas.width = tShirtImageWidth;
+      offScreenCanvas.height = tShirtImageHeight;
+      const ctx = offScreenCanvas.getContext("2d");
 
-  //     // Generate PNG data URL with the overlaid canvas and t-shirt image
-  //     const dataURL = canvas.toDataURL({ format: "png" });
+      if (!ctx) {
+        console.error("Failed to get 2D context");
+        return;
+      }
 
-  //     // Download the combined canvas and t-shirt image as a PNG file
-  //     const link = document.createElement("a");
-  //     link.href = dataURL;
-  //     link.download = "canvas_with_image.png";
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     document.body.removeChild(link);
+      // Draw the T-shirt as the background
+      ctx.drawImage(backgroundImage, 0, 0, tShirtImageWidth, tShirtImageHeight);
+      const scaleX = width / canvas.getWidth();
+      const scaleY = height / canvas.getHeight();
+      const offsetX = (left / 100) * tShirtImageWidth - width / 2;
+      const offsetY = (top / 100) * tShirtImageHeight - height / 2;
 
-  //     // Remove the t-shirt image from the canvas after downloading
-  //     canvas.remove(tshirtImage);
-  //   });
-  // };
+      canvas.setZoom(scaleX);
+      //canvas.renderAll();
+
+      const canvasUrl = canvas.toDataURL({
+        format: "png",
+        multiplier: 1,
+      });
+
+      const designImage = new Image();
+      designImage.src = canvasUrl;
+      designImage.onload = () => {
+        ctx.drawImage(designImage, offsetX, offsetY, width, height);
+
+        const finalImage = offScreenCanvas.toDataURL("image/png");
+
+        const link = document.createElement("a");
+        link.download = `${currentDesignPosition}-design-with-tshirt.png`;
+        link.href = finalImage;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+    };
+  };
 
   return {
     copyObject,

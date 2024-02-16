@@ -21,6 +21,7 @@ const Tabs: React.FC = () => {
     lockLayer,
     unlockLayer,
     emptyCanvas,
+    downloadAsPNG,
   } = useMenuOps();
 
   const TabOptions: Array<Tab> = [
@@ -65,7 +66,7 @@ const Tabs: React.FC = () => {
     {
       title: "Download as PNG",
       icon: IoDownloadSharp,
-      onClick: () => {},
+      onClick: () => downloadAsPNG(),
     },
   ];
 
