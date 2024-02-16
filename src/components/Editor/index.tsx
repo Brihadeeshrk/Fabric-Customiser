@@ -15,11 +15,12 @@ const Editor: React.FC<EditorProps> = () => {
   const { customisationType } = useContext(fabricContext);
 
   return (
-    <Flex width="100%">
+    <Flex width="100%" border="2px solid red">
       <Flex
+        border="2px solid blue"
         direction="column"
         p={3}
-        width="15%"
+        width="30%"
         maxWidth="400px"
         className="space-y-5"
       >
