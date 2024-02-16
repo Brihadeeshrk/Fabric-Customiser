@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { fabricContext } from "@/store/context";
-import { Image } from "@chakra-ui/react";
+import { Image, Text } from "@chakra-ui/react";
 
 interface designPositionOptions {
   image: string;
@@ -37,13 +37,24 @@ const designPositions: Array<designPositionOptions> = [
     position: "Back Center",
   },
 ];
-
+type SavedPositions = {
+  [key: string]: boolean;
+};
 const DesignPosition: React.FC = () => {
   const {
     storeCurrentDesignPosition,
     currentDesignPosition,
     storeCurrentTshirt,
   } = useContext(fabricContext);
+
+  const [savedPositions, setSavedPositions] = React.useState<SavedPositions>(
+    {}
+  );
+
+  useEffect(() => {
+    const canvasData = JSON.parse(localStorage.getItem("canvas") || "{}");
+    setSavedPositions(canvasData as SavedPositions);
+  }, [currentDesignPosition]);
 
   const handleDesignPositionSelection = (position: string) => {
     storeCurrentDesignPosition(position);
@@ -61,39 +72,53 @@ const DesignPosition: React.FC = () => {
     }
   };
 
+  const isPositionSaved = (position: string) => {
+    return !!savedPositions[position];
+  };
+
   return (
-    <div className="p-3 bg-gray-200 rounded-md flex space-y-3">
+    <div className="w-[100%] p-3 bg-off-white rounded-md flex-col space-y-3">
       <p className="text-sm font-bold text-gray-600">
         Select a design position
       </p>
-      <div className="flex items-center justify-between space-y-3">
+      <div className="flex items-center justify-between ">
         {designPositions.map((asset) => (
           <div
-            className={`flex-col items-center justify-center xl:p-2 rounded-md w-[150px] h-[170px] m-2 ${
+            className={`flex-col xl:p-2 rounded-md m-2 w-[100px] h-[150px] bg-[#fff] ${
               currentDesignPosition === asset.position
-                ? "border-4 border-blue-500"
-                : "border-2 border-gray-400"
+                ? "border-2 border-primary-blue"
+                : "border border-gray-400"
             }`}
             onClick={() => handleDesignPositionSelection(asset.position)}
             key={asset.position}
           >
-            <p
-              className={`transition-all text-left text-sm xl:text-xl text-gray-700 ${
+            <Text
+              className={`flex h-[35%] ${
                 currentDesignPosition === asset.position
                   ? "text-blue-500 font-bold"
                   : ""
               }`}
+              color={"#2C514C"}
+              fontSize={{ base: "10px", xl: "12px" }}
             >
               {asset.position}
-            </p>
-            <div className=" flex items-center justify-center">
-              <Image
-                cursor={"pointer"}
-                src={asset.image}
-                alt="image"
-                width={{ base: 75, xl: 100 }}
-                p={3}
-              />
+            </Text>
+            <div className=" flex flex-1 items-center justify-center   ">
+              <div
+                className={` flex flex-1 items-center justify-center rounded-full  ${
+                  isPositionSaved(asset.position)
+                    ? "bg-light-green"
+                    : "bg-off-white"
+                } `}
+              >
+                <Image
+                  cursor={"pointer"}
+                  src={asset.image}
+                  alt="image"
+                  width={{ base: 75, xl: 100 }}
+                  p={3}
+                />
+              </div>
             </div>
           </div>
         ))}
