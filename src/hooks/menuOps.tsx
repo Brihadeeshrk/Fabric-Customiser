@@ -16,10 +16,14 @@ const useMenuOps = () => {
 
   const saveCanvasState = (canvas: fabric.Canvas, position: string) => {
     const canvasStates = JSON.parse(localStorage.getItem("canvas") || "{}");
-    const state = JSON.stringify({
-      canvas: canvas.toJSON(),
-    });
-    canvasStates[position] = state;
+    if (canvas.getObjects().length === 0) {
+      delete canvasStates[position];
+    } else {
+      const state = JSON.stringify({
+        canvas: canvas.toJSON(),
+      });
+      canvasStates[position] = state;
+    }
     localStorage.setItem("canvas", JSON.stringify(canvasStates));
   };
 
