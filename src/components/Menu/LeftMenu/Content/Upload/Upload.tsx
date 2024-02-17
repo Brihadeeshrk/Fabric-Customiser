@@ -1,11 +1,9 @@
-import { Button, Flex, Image, Input } from "@chakra-ui/react";
+import { Button, Flex, Image, Input, Text } from "@chakra-ui/react";
 import useFabricOps from "@/hooks/fabricOps";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { fabricContext } from "@/store/context";
 import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
 import { fabric } from "fabric";
-
-import { Label } from "@/components/ui/label";
 
 const radioOptions: Array<string> = [
   "Grayscale",
@@ -159,7 +157,9 @@ const Upload: React.FC = () => {
                     {radioOptions.map((option, index) => (
                       <div key={index} className="flex items-center space-x-2">
                         <Checkbox value={option} id={`r${index}`} />
-                        <Label htmlFor={`r${index}`}>{option}</Label>
+                        <Text as="label" htmlFor={`r${index}`}>
+                          {option}
+                        </Text>
                       </div>
                     ))}
                   </div>

@@ -1,10 +1,10 @@
+import { theme } from "@/chakra/theme";
+import FabricContextProvider from "@/store/context";
 import "@/styles/globals.css";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
-import FabricContextProvider from "@/store/context";
-import { HydrationProvider, Client } from "react-hydration-provider";
-import { theme } from "@/chakra/theme";
+import { Client, HydrationProvider } from "react-hydration-provider";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -15,7 +15,9 @@ export default function App({ Component, pageProps }: AppProps) {
             <Toaster />
           </div>
           <ChakraProvider theme={theme}>
-            <Component {...pageProps} />
+            <Box color={"#14281D"}>
+              <Component {...pageProps} />
+            </Box>
           </ChakraProvider>
         </FabricContextProvider>
       </Client>

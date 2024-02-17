@@ -1,4 +1,4 @@
-import { Button, Flex, Icon } from "@chakra-ui/react";
+import { Button, Flex, Icon, Text } from "@chakra-ui/react";
 import React, { useContext, useEffect } from "react";
 import { MdPrint } from "react-icons/md";
 import { GiSewingNeedle } from "react-icons/gi";
@@ -39,27 +39,36 @@ const Customisation: React.FC = () => {
   };
 
   return (
-    <Flex width="100%" className="bg-primary-blue rounded-md">
-      <Flex width="100%" className="space-x-2">
+    <Flex p={2} width="100%" className="bg-off-white rounded-md">
+      <Flex
+        p={2}
+        align="center"
+        justify="space-evenly"
+        width="100%"
+        className="bg-primary-blue space-x-1 rounded-md"
+      >
         {buttons.map((button) => (
           <Button
             key={button.text}
             display="flex"
+            alignItems={"center"}
             bg={customisationType === button.text ? "white" : "transparent"}
             color={customisationType === button.text ? "text.100" : "white"}
             onClick={() => handleButtonClick(button.text)}
             _hover={{ opacity: 0.9 }}
-            p={7}
+            p={{ xl: 7 }}
+            justifyContent={"space-evenly"}
+            className="space-x-1"
           >
             <Icon
               as={button.icon}
-              fontSize={{ base: 20, xl: 25 }}
-              mr={3}
+              fontSize={18}
               color={
                 customisationType === button.text ? "primary.100" : "white"
               }
             />
-            <p className="text-xs xl:text-xl">{button.text}</p>
+
+            <Text fontSize={{ base: "12px", xl: "18px" }}>{button.text}</Text>
           </Button>
         ))}
       </Flex>
