@@ -96,11 +96,11 @@ const CanvasPosition: React.FC<CanvasPositionProps> = ({
       if (activeObject) {
         switch (activeObject.type) {
           case "image":
-            switchTab("Upload Image");
+            switchTab("Picture");
             break;
 
           case "text":
-            switchTab("Insert Text");
+            switchTab("Text");
             break;
 
           default:

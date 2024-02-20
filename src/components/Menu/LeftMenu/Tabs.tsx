@@ -1,8 +1,18 @@
-import { Icon } from "@chakra-ui/react";
+import { Flex, Icon, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import React from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { RxText } from "react-icons/rx";
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  TabIndicator,
+} from "@chakra-ui/react";
+import TextTab from "./Content/Text/TextTab";
+import Upload from "./Content/Upload/Upload";
 
 interface TabsProps {
   currentTab: string;
@@ -17,58 +27,63 @@ export interface Tab {
 
 const TabOptions: Array<Tab> = [
   {
-    title: "Upload Image",
+    title: "Picture",
     icon: AiOutlineCloudUpload,
   },
   {
-    title: "Insert Text",
+    title: "Text",
     icon: RxText,
   },
 ];
 
-const Tabs: React.FC<TabsProps> = ({ chooseTab, currentTab }) => {
-  const [isHovered, setIsHovered] = React.useState(false);
-
+const MenuTabs: React.FC<TabsProps> = ({ chooseTab, currentTab }) => {
   return (
-    <div className="space-y-8">
-      {TabOptions.map((tab) => (
-        <div
-          className="flex md:flex justify-center items-center relative"
-          key={tab.title}
-          onClick={() => chooseTab(tab.title)}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <div
-            style={{
-              transition: "background-color 0.2s",
-            }}
-          >
-            <Icon
-              fontSize={34}
-              as={tab.icon}
-              color={currentTab === tab.title ? "blue.500" : "gray.500"}
-            />
-          </div>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.2 }}
-            className="label"
-          >
-            <p
-              className={`font-semibold text-sm md:text-md text-center cursor-pointer ${
-                currentTab === tab.title ? "text-blue-500" : "text-gray-500"
-              }`}
+    <Flex width="100%" className="space-y-8">
+      <Tabs position="relative" variant="unstyled" width="100%">
+        <TabList width="100%">
+          {TabOptions.map((tab) => (
+            <Tab
+              display={{ base: "flex-col", xl: "flex" }}
+              width="49%"
+              onClick={() => chooseTab(tab.title)}
+              key={tab.title}
+              className="space-y-1 xl:space-x-2"
             >
-              {tab.title}
-            </p>
-          </motion.div>
-        </div>
-      ))}
-    </div>
+              <Icon
+                fontSize={{ base: 18, xl: 25 }}
+                as={tab.icon}
+                color={currentTab === tab.title ? "primary.100" : "gray.500"}
+              />
+              <Text
+                fontSize={{ base: 12, xl: 18 }}
+                className={`${
+                  currentTab === tab.title && "text-primary-blue font-semibold"
+                }`}
+              >
+                {tab.title}
+              </Text>
+            </Tab>
+          ))}
+        </TabList>
+        <TabIndicator
+          mt="-1.5px"
+          height="2px"
+          bg="primary.100"
+          borderRadius="1px"
+        />
+
+        <TabPanels>
+          <TabPanel>
+            <Upload />
+          </TabPanel>
+
+          <TabPanel>
+            <TextTab />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Flex>
   );
 };
 
-export default Tabs;
+export default MenuTabs;

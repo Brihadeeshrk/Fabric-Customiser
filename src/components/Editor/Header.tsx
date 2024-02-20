@@ -14,7 +14,7 @@ type HeaderProps = {};
 const Header: React.FC<HeaderProps> = () => {
   return (
     <Flex direction={"column"} p={3} className="bg-off-white">
-      <Container maxW={{ base: "3xl", xl: "8xl" }}>
+      <Container maxW={{ base: "xl", lg: "2xl", xl: "5xl" }}>
         <Text
           color={"#2C514C"}
           fontSize={{ base: "18px", xl: "30px" }}

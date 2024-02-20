@@ -41,7 +41,7 @@ const Customisation: React.FC = () => {
   return (
     <Flex p={2} width="100%" className="bg-off-white rounded-md">
       <Flex
-        p={2}
+        p={{ base: 1, xl: 2 }}
         align="center"
         justify="space-evenly"
         width="100%"
@@ -50,7 +50,7 @@ const Customisation: React.FC = () => {
         {buttons.map((button) => (
           <Button
             key={button.text}
-            display="flex"
+            display={{ base: "flex-col", xl: "flex" }}
             alignItems={"center"}
             bg={customisationType === button.text ? "white" : "transparent"}
             color={customisationType === button.text ? "text.100" : "white"}
@@ -58,17 +58,17 @@ const Customisation: React.FC = () => {
             _hover={{ opacity: 0.9 }}
             p={{ xl: 7 }}
             justifyContent={"space-evenly"}
-            className="space-x-1"
+            className="space-y-1 xl:space-x-2"
           >
             <Icon
               as={button.icon}
-              fontSize={18}
+              fontSize={{ base: "12px", xl: "18px" }}
               color={
                 customisationType === button.text ? "primary.100" : "white"
               }
             />
 
-            <Text fontSize={{ base: "12px", xl: "18px" }}>{button.text}</Text>
+            <Text fontSize={{ base: "10px", xl: "18px" }}>{button.text}</Text>
           </Button>
         ))}
       </Flex>

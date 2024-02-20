@@ -6,7 +6,7 @@ export const fabricContext = React.createContext({
   storeCanvas: (canvas: fabric.Canvas) => {},
   elementType: "",
   storeElementType: (type: string) => {},
-  tab: "Upload Image",
+  tab: "",
   switchTab: (tab: string) => {},
   currentDesignPosition: "",
   storeCurrentDesignPosition: (position: string) => {},
@@ -27,7 +27,7 @@ const FabricContextProvider: React.FC<fabricContextProviderProps> = ({
     undefined
   );
   const [elementType, setElementType] = React.useState("");
-  const [tab, setTab] = React.useState("Upload Image");
+  const [tab, setTab] = React.useState("Picture");
   const [currentDesignPosition, setCurrentDesignPosition] =
     React.useState<string>("Front Left Chest");
   const [customisationType, setCustomisationType] = React.useState("");

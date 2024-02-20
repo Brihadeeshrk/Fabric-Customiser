@@ -22,7 +22,7 @@ const Editor: React.FC<EditorProps> = () => {
       <Container
         className="space-y-3"
         width="100%"
-        maxW={{ base: "3xl", xl: "8xl" }}
+        maxW={{ base: "xl", lg: "2xl", xl: "5xl" }}
       >
         {/* Action Buttons */}
         <Flex
@@ -61,10 +61,10 @@ const Editor: React.FC<EditorProps> = () => {
             direction="column"
             width="30%"
             maxWidth="400px"
-            className="space-y-5  rounded-md"
+            className="space-y-5 rounded-md"
           >
             <Customisation />
-            {/* <Menu /> */}
+            <Menu />
           </Flex>
         </Box>
       </Container>

@@ -1,8 +1,8 @@
 import { fabricContext } from "@/store/context";
-import { AnimatePresence } from "framer-motion";
 import React from "react";
-import Content from "./Content";
-import Tabs from "./Tabs";
+
+import { Flex } from "@chakra-ui/react";
+import MenuTabs from "./Tabs";
 
 interface MenuProps {}
 
@@ -11,16 +11,14 @@ const Menu: React.FC<MenuProps> = () => {
 
   return (
     <>
-      <div className="bg-off-white h-2/3 rounded-md shadow-lg flex-col">
-        <AnimatePresence>
-          <div className="p-3 w-[25% md:w-[15%]] bg-gray-200 rounded-md">
-            <Tabs chooseTab={switchTab} currentTab={tab} />
-          </div>
-        </AnimatePresence>
-        <div className="w-full p-3 rounded-md">
-          <Content currentTab={tab} />
-        </div>
-      </div>
+      <Flex
+        border="1px solid red"
+        className="bg-off-white h-2/3 rounded-md shadow-lg flex-col"
+      >
+        <Flex width="100%" className="p-3 rounded-md">
+          <MenuTabs chooseTab={switchTab} currentTab={tab} />
+        </Flex>
+      </Flex>
     </>
   );
 };
